@@ -1,6 +1,6 @@
-import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:thisconnect/screens/otp_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,18 +12,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController phoneController = TextEditingController();
 
-  Country selectedCountry = Country(
-    phoneCode: "91",
-    countryCode: "IN",
-    e164Sc: 0,
-    level: 1,
-    name: "India",
-    example: "India",
-    displayName: "India",
-    displayNameNoCountryCode: "IN",
-    e164Key: "IN",
-    geographic: true,
-  );
   @override
   void dispose() {
     phoneController.dispose();
@@ -101,7 +89,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 10,
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              OTPScreen(phoneNumber: phoneController.text),
+                        ));
+                  },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
