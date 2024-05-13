@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:otp_timer_button/otp_timer_button.dart';
+import 'package:thisconnect/screens/signup_screen.dart';
 
 class OTPScreen extends StatefulWidget {
   const OTPScreen({super.key, required this.phoneNumber});
@@ -74,6 +75,9 @@ class _OTPScreenState extends State<OTPScreen> {
                 enteredOTP = code;
               },
               onSubmit: (String verificationCode) {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (_) => const SignUpScreen(),
+                ));
                 showDialog(
                     context: context,
                     builder: (context) {
