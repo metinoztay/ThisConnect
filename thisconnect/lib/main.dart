@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:thisconnect/screens/login_screen.dart';
+import 'package:thisconnect/screens/main_screen.dart';
 import 'screens/splash_screen.dart';
 
 void main() => runApp(const ThisConnect());
@@ -17,7 +18,7 @@ class ThisConnect extends StatelessWidget {
               backgroundColor: Colors.white,
               elevation: 0,
               iconTheme: IconThemeData(color: Colors.black))),
-      home: const LoginScreen(),
+      home: const MainScreen(),
     );
   }
 }
