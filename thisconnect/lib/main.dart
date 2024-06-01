@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:thisconnect/screens/chat_screen.dart';
+import 'package:thisconnect/screens/home_screen.dart';
 import 'package:thisconnect/screens/login_screen.dart';
 import 'package:thisconnect/screens/main_screen.dart';
 import 'screens/splash_screen.dart';
@@ -16,9 +18,14 @@ class ThisConnect extends StatelessWidget {
           scaffoldBackgroundColor: Colors.white,
           appBarTheme: const AppBarTheme(
               backgroundColor: Colors.white,
-              elevation: 0,
+              elevation: 20,
               iconTheme: IconThemeData(color: Colors.black))),
-      home: const MainScreen(),
+      home: const SplashScreen(),
+      routes: {
+        '/login': (context) => const LoginScreen(),
+        '/main': (context) => const MainScreen(),
+        '/chat': (context) => const ChatScreen(),
+      },
     );
   }
 }

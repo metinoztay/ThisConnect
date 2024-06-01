@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:thisconnect/screens/home_screen.dart';
+import 'package:thisconnect/screens/main_screen.dart';
 import 'package:thisconnect/screens/onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -29,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen>
     Future.delayed(const Duration(seconds: 3), () {
       isIntroducted
           ? Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => const HomeScreen()))
+              MaterialPageRoute(builder: (_) => const MainScreen()))
           : Navigator.of(context).pushReplacement(MaterialPageRoute(
               builder: (_) => const OnBoardingScreen(),
             ));

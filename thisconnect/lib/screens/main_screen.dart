@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:thisconnect/screens/home_screen.dart';
-import 'package:thisconnect/screens/inbox_screen.dart';
-import 'package:thisconnect/screens/outbox_screen.dart';
+import 'package:thisconnect/screens/messages_screen.dart';
 import 'package:thisconnect/screens/profile_screen.dart';
-import 'package:thisconnect/screens/qrcreate_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -17,16 +15,12 @@ class _MainScreenState extends State<MainScreen> {
   int selectedPage = 0;
   String indextext = " ";
   final pageOptions = [
-    const InboxScreen(),
-    const OutboxScreen(),
+    const MessagesScreen(),
     const HomeScreen(),
-    const QRCreateScreen(),
     const ProfileScreen(),
   ];
   final appBarTitles = [
-    "Inbox",
-    "Outbox",
-    "Home",
+    "Messages",
     "QR Scanner",
     "Profile",
   ];
@@ -43,17 +37,15 @@ class _MainScreenState extends State<MainScreen> {
         body: pageOptions[selectedPage],
         bottomNavigationBar: ConvexAppBar(
           style: TabStyle.fixedCircle,
-          height: 65,
+          height: 54,
           initialActiveIndex: selectedPage,
           items: const [
-            TabItem(icon: Icons.message, title: 'Inbox'),
-            TabItem(icon: Icons.send, title: 'Outbox'),
+            TabItem(icon: Icons.message, title: 'Messages'),
             TabItem(icon: Icons.qr_code_scanner, title: 'QR Scanner'),
-            TabItem(icon: Icons.qr_code, title: 'QR Create'),
             TabItem(icon: Icons.people, title: 'Profile'),
           ],
           onTap: (int index) {
-            if (index == 2) {
+            if (index == 1) {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (_) => const HomeScreen()));
             }
