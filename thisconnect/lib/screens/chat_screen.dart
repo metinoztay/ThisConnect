@@ -13,6 +13,8 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   TextEditingController messageController = TextEditingController();
   final String currentUserId = '1'; // Şu anki kullanıcının ID'si
+  bool isMessageEmpty = true;
+
   List<Message> messages = [
     Message(
         id: '1',
@@ -41,9 +43,28 @@ class _ChatScreenState extends State<ChatScreen> {
         senderUserId: '2',
         receiverUserId: '1',
         content:
-            'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. ',
+            'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.',
         createdAt: DateTime.now()),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    messageController.addListener(_handleMessageChanged);
+  }
+
+  @override
+  void dispose() {
+    messageController.removeListener(_handleMessageChanged);
+    messageController.dispose();
+    super.dispose();
+  }
+
+  void _handleMessageChanged() {
+    setState(() {
+      isMessageEmpty = messageController.text.trim().isEmpty;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,40 +95,37 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Column(
           children: [
             Expanded(
-                child: ListView.builder(
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) {
-                      final message = messages[index];
-                      final isMe = message.senderUserId == currentUserId;
+                child: Padding(
+              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+              child: ListView.builder(
+                  itemCount: messages.length,
+                  itemBuilder: (context, index) {
+                    final message = messages[index];
+                    final isMe = message.senderUserId == currentUserId;
 
-                      return Row(
-                          mainAxisAlignment: isMe
-                              ? MainAxisAlignment.end
-                              : MainAxisAlignment.start,
-                          children: [
-                            MessageBubble(
-                              message: message,
-                              currentUserId: currentUserId,
-                            ),
-                          ]);
-                    })),
+                    return Row(
+                        mainAxisAlignment: isMe
+                            ? MainAxisAlignment.end
+                            : MainAxisAlignment.start,
+                        children: [
+                          MessageBubble(
+                            message: message,
+                            currentUserId: currentUserId,
+                          ),
+                        ]);
+                  }),
+            )),
             Container(
               height: 54,
               decoration: const BoxDecoration(color: Colors.blue),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  const IconButton(
-                      onPressed: null,
-                      icon: Icon(
-                        Icons.face_outlined,
-                        color: Colors.white,
-                      )),
                   Expanded(
                     flex: 2,
                     child: TextField(
                       controller: messageController,
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
                           contentPadding: EdgeInsets.only(left: 15),
                           hintText: 'Type a message',
@@ -115,18 +133,34 @@ class _ChatScreenState extends State<ChatScreen> {
                           border: InputBorder.none),
                     ),
                   ),
-                  const IconButton(
-                      onPressed: null,
-                      icon: Icon(
-                        Icons.attach_file_outlined,
+                  if (isMessageEmpty) ...[
+                    IconButton(
+                        onPressed: () {
+                          null;
+                        },
+                        icon: const Icon(
+                          Icons.attach_file_outlined,
+                          color: Colors.white,
+                        )),
+                    IconButton(
+                        onPressed: () {
+                          null;
+                        },
+                        icon: const Icon(
+                          Icons.mic_outlined,
+                          color: Colors.white,
+                        )),
+                  ] else ...[
+                    IconButton(
+                      onPressed: () {
+                        null;
+                      },
+                      icon: const Icon(
+                        Icons.send,
                         color: Colors.white,
-                      )),
-                  const IconButton(
-                      onPressed: null,
-                      icon: Icon(
-                        Icons.mic_outlined,
-                        color: Colors.white,
-                      )),
+                      ),
+                    ),
+                  ]
                 ],
               ),
             ),

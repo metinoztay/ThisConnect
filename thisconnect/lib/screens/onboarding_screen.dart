@@ -48,8 +48,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             IntroPage4(),
           ],
         ),
-
-        //dot indicators
         Container(
           alignment: const Alignment(0, 0.87),
           child: Row(
@@ -61,7 +59,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 },
                 child: const Text(
                   "SKIP",
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
                 ),
               ),
               SmoothPageIndicator(controller: _controller, count: 4),
@@ -75,7 +76,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       },
                       child: const Text(
                         "DONE",
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
                       ))
                   : GestureDetector(
                       onTap: () {
@@ -86,7 +90,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       },
                       child: const Text(
                         "NEXT",
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
                       ))
             ],
           ),

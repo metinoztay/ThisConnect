@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-import 'package:thisconnect/screens/home_screen.dart';
 import 'package:thisconnect/screens/messages_screen.dart';
-import 'package:thisconnect/screens/profile_screen.dart';
+import 'package:thisconnect/screens/profile_menu_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -13,23 +12,24 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int selectedPage = 0;
-  String indextext = " ";
   final pageOptions = [
     const MessagesScreen(),
-    const HomeScreen(),
-    const ProfileScreen(),
+    const MessagesScreen(),
+    const ProfileMenuScreen(),
   ];
   final appBarTitles = [
     "Messages",
-    "QR Scanner",
+    "Messages",
     "Profile",
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(appBarTitles[selectedPage],
-              style: const TextStyle(fontSize: 20, color: Colors.white)),
+              style: const TextStyle(
+                  fontSize: 20, color: Colors.white, letterSpacing: 1)),
           backgroundColor: Colors.blue,
           elevation: 210,
           centerTitle: true,
@@ -41,18 +41,20 @@ class _MainScreenState extends State<MainScreen> {
           initialActiveIndex: selectedPage,
           items: const [
             TabItem(icon: Icons.message, title: 'Messages'),
-            TabItem(icon: Icons.qr_code_scanner, title: 'QR Scanner'),
+            TabItem(
+              icon: Icons.qr_code_scanner,
+              title: 'Messages',
+            ),
             TabItem(icon: Icons.people, title: 'Profile'),
           ],
           onTap: (int index) {
             if (index == 1) {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) => const HomeScreen()));
+              Navigator.pushNamed(context, '/qrScanner');
             }
-
             setState(() {
-              selectedPage = index;
-              indextext = index.toString();
+              if (index != 1) {
+                selectedPage = index;
+              }
             });
           },
         ));

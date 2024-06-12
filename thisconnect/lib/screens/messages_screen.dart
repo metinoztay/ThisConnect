@@ -13,11 +13,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
   List<User> users = [];
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     readUsers();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(

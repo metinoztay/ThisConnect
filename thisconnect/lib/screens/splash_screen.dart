@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen>
     super.initState();
     checkIsIntroducted();
 
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 1), () {
       isIntroducted
           ? Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (_) => const MainScreen()))
