@@ -9,6 +9,7 @@ import 'package:thisconnect/screens/onboarding_screen.dart';
 import 'package:thisconnect/screens/profile_menu_screen.dart';
 import 'package:thisconnect/screens/qr_list_screen.dart';
 import 'package:thisconnect/screens/qr_scanner_screen.dart';
+import 'package:thisconnect/screens/signalRdeneme.dart';
 import 'screens/splash_screen.dart';
 
 void main() => runApp(const ThisConnect());
@@ -28,7 +29,8 @@ class ThisConnect extends StatelessWidget {
               backgroundColor: Colors.blue,
               elevation: 20,
               iconTheme: IconThemeData(color: Colors.white))),
-      home: const SplashScreen(),
+      //home: const SplashScreen(),
+      home: SignalRScreen(),
       routes: {
         '/login': (context) => const LoginScreen(),
         '/help': (context) => const HelpScreen(),
