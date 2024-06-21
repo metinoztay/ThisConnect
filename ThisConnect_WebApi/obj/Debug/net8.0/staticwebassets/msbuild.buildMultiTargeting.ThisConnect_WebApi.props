@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\ThisConnect_WebApi.props" />
+</Project>

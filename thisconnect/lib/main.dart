@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:thisconnect/screens/chat_screen.dart';
 import 'package:thisconnect/screens/help_screen.dart';
@@ -9,10 +11,12 @@ import 'package:thisconnect/screens/onboarding_screen.dart';
 import 'package:thisconnect/screens/profile_menu_screen.dart';
 import 'package:thisconnect/screens/qr_list_screen.dart';
 import 'package:thisconnect/screens/qr_scanner_screen.dart';
-import 'package:thisconnect/screens/signalRdeneme.dart';
 import 'screens/splash_screen.dart';
 
-void main() => runApp(const ThisConnect());
+void main() {
+  HttpOverrides.global = MyHttpOverrides();
+  runApp(const ThisConnect());
+}
 
 class ThisConnect extends StatelessWidget {
   const ThisConnect({super.key});
@@ -29,13 +33,11 @@ class ThisConnect extends StatelessWidget {
               backgroundColor: Colors.blue,
               elevation: 20,
               iconTheme: IconThemeData(color: Colors.white))),
-      //home: const SplashScreen(),
-      home: SignalRScreen(),
+      home: const SplashScreen(),
       routes: {
         '/login': (context) => const LoginScreen(),
         '/help': (context) => const HelpScreen(),
         '/main': (context) => const MainScreen(),
-        '/chat': (context) => const ChatScreen(),
         '/home': (context) => const HomeScreen(),
         '/splash': (context) => const SplashScreen(),
         '/intro': (context) => const OnBoardingScreen(),
@@ -45,5 +47,14 @@ class ThisConnect extends StatelessWidget {
         '/qrScanner': (context) => const QRScannerScreen(),
       },
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }

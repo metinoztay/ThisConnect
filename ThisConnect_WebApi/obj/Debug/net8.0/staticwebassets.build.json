@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "PKZwzBKTYcI171N9PvZ6K+R3767cxXOwCjnIveIiUgw=",
+  "Source": "ThisConnect_WebApi",
+  "BasePath": "_content/ThisConnect_WebApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

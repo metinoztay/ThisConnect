@@ -1,74 +1,72 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:thisconnect/models/message.dart';
-import 'package:thisconnect/widgets/message_bubble.dart';
+import 'package:thisconnect/models/messageModel.dart';
+import 'package:thisconnect/utils/removeMessageExtraChar.dart';
+import 'package:thisconnect/widgets/chatMessageListWidget.dart';
+import 'package:signalr_core/signalr_core.dart';
+import 'package:thisconnect/widgets/chatTypeMessageWidget.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key});
-
+  final String userName;
+  const ChatScreen(this.userName, {Key? key}) : super(key: key);
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  TextEditingController messageController = TextEditingController();
-  final String currentUserId = '1'; // Şu anki kullanıcının ID'si
+  ScrollController chatListScrollController = new ScrollController();
+  TextEditingController messageTextController = TextEditingController();
+  // Şu anki kullanıcının ID'si
   bool isMessageEmpty = true;
-
-  List<Message> messages = [
-    Message(
-        id: '1',
-        chatRoomId: '1',
-        senderUserId: '1',
-        receiverUserId: '2',
-        content: 'Hello',
-        createdAt: DateTime.now()),
-    Message(
-        id: '2',
-        chatRoomId: '1',
-        senderUserId: '2',
-        receiverUserId: '1',
-        content: 'Hi',
-        createdAt: DateTime.now()),
-    Message(
-        id: '3',
-        chatRoomId: '1',
-        senderUserId: '1',
-        receiverUserId: '2',
-        content: 'How are you?',
-        createdAt: DateTime.now()),
-    Message(
-        id: '4',
-        chatRoomId: '1',
-        senderUserId: '2',
-        receiverUserId: '1',
-        content:
-            'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.',
-        createdAt: DateTime.now()),
-  ];
 
   @override
   void initState() {
     super.initState();
-    messageController.addListener(_handleMessageChanged);
+    openSignalRConnection();
+    createRandomId();
+    messageTextController.addListener(_handleMessageChanged);
   }
 
   @override
   void dispose() {
-    messageController.removeListener(_handleMessageChanged);
-    messageController.dispose();
+    messageTextController.removeListener(_handleMessageChanged);
+    messageTextController.dispose();
     super.dispose();
   }
 
   void _handleMessageChanged() {
     setState(() {
-      isMessageEmpty = messageController.text.trim().isEmpty;
+      isMessageEmpty = messageTextController.text.trim().isEmpty;
+    });
+  }
+
+  int currentUserId = 0;
+  //generate random user id
+  createRandomId() {
+    Random random = Random();
+    currentUserId = random.nextInt(999999);
+  }
+
+  submitMessageFunction() async {
+    var messageText = removeMessageExtraChar(messageTextController.text);
+    await connection.invoke('SendMessage',
+        args: [widget.userName, currentUserId, messageText]);
+    messageTextController.text = "";
+
+    Future.delayed(const Duration(milliseconds: 50), () {
+      chatListScrollController.animateTo(
+          chatListScrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.ease);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final viewInsets = MediaQuery.viewInsetsOf(context);
+    var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(33, 150, 243, 1),
@@ -91,82 +89,56 @@ class _ChatScreenState extends State<ChatScreen> {
           ],
         ),
       ),
-      body: SafeArea(
+      body: Container(
+        height: size.height,
+        width: size.width,
         child: Column(
           children: [
-            Expanded(
-                child: Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-              child: ListView.builder(
-                  itemCount: messages.length,
-                  itemBuilder: (context, index) {
-                    final message = messages[index];
-                    final isMe = message.senderUserId == currentUserId;
-
-                    return Row(
-                        mainAxisAlignment: isMe
-                            ? MainAxisAlignment.end
-                            : MainAxisAlignment.start,
-                        children: [
-                          MessageBubble(
-                            message: message,
-                            currentUserId: currentUserId,
-                          ),
-                        ]);
-                  }),
-            )),
-            Container(
-              height: 54,
-              decoration: const BoxDecoration(color: Colors.blue),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: TextField(
-                      controller: messageController,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.only(left: 15),
-                          hintText: 'Type a message',
-                          hintStyle: TextStyle(color: Colors.white),
-                          border: InputBorder.none),
-                    ),
-                  ),
-                  if (isMessageEmpty) ...[
-                    IconButton(
-                        onPressed: () {
-                          null;
-                        },
-                        icon: const Icon(
-                          Icons.attach_file_outlined,
-                          color: Colors.white,
-                        )),
-                    IconButton(
-                        onPressed: () {
-                          null;
-                        },
-                        icon: const Icon(
-                          Icons.mic_outlined,
-                          color: Colors.white,
-                        )),
-                  ] else ...[
-                    IconButton(
-                      onPressed: () {
-                        null;
-                      },
-                      icon: const Icon(
-                        Icons.send,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ]
-                ],
-              ),
-            ),
+            chatMessageWidget(
+                chatListScrollController, messageModel, currentUserId, context),
+            chatTypeMessageWidget(
+                messageTextController, submitMessageFunction, isMessageEmpty),
           ],
         ),
       ),
     );
+  }
+
+  //set url and configs
+  final connection = HubConnectionBuilder()
+      .withUrl(
+          'https://10.0.2.2:7049/chathub',
+          HttpConnectionOptions(
+            logging: (level, message) => print(message),
+            transport: HttpTransportType.webSockets,
+            skipNegotiation: true,
+          ))
+      .build();
+
+  //connect to signalR
+  Future<void> openSignalRConnection() async {
+    await connection.start();
+    connection.on('ReceiveMessage', (message) {
+      _handleIncommingDriverLocation(message);
+    });
+    await connection.invoke('JoinUSer', args: [widget.userName, currentUserId]);
+  }
+
+  //get messages
+  List<MessageModel> messageModel = [];
+  Future<void> _handleIncommingDriverLocation(List<dynamic>? args) async {
+    if (args != null) {
+      var jsonResponse = json.decode(json.encode(args[0]));
+      MessageModel data = MessageModel.fromJson(jsonResponse);
+      setState(() {
+        messageModel.add(data);
+        Future.delayed(const Duration(milliseconds: 50), () {
+          chatListScrollController.animateTo(
+              chatListScrollController.position.maxScrollExtent,
+              duration: Duration(milliseconds: 500),
+              curve: Curves.ease);
+        });
+      });
+    }
   }
 }

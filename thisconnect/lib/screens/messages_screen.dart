@@ -1,4 +1,5 @@
 import 'package:thisconnect/models/user.dart';
+import 'package:thisconnect/screens/chat_screen.dart';
 import 'package:thisconnect/services/user_api.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +29,15 @@ class _MessagesScreenState extends State<MessagesScreen> {
             final user = users[index];
             final name = user.fullName;
             return GestureDetector(
-              onTap: () => Navigator.pushNamed(context, '/chat'),
+              onTap: () {
+                Navigator.push<void>(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) =>
+                        const ChatScreen("Deneme"),
+                  ),
+                );
+              },
               child: ListTile(
                 title: Row(
                   children: [
