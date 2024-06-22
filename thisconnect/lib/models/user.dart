@@ -1,4 +1,4 @@
-class User {
+class Usertemp {
   String title;
   String firstName;
   String lastName;
@@ -9,7 +9,7 @@ class User {
   String image;
   String messageDayFull;
 
-  User({
+  Usertemp({
     required this.title,
     required this.firstName,
     required this.lastName,

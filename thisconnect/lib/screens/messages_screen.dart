@@ -11,7 +11,7 @@ class MessagesScreen extends StatefulWidget {
 }
 
 class _MessagesScreenState extends State<MessagesScreen> {
-  List<User> users = [];
+  List<Usertemp> users = [];
   @override
   void initState() {
     super.initState();

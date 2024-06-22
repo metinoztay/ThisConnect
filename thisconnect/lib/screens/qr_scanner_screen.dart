@@ -82,7 +82,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => QRResultScreen(
-                                        qrCode: qrCode,
+                                        qrCodeId: qrCode,
                                         loadScan: loadScan,
                                       )));
                         }

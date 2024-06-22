@@ -3,7 +3,7 @@ import 'package:thisconnect/models/user.dart';
 import 'package:http/http.dart' as http;
 
 class UserApi {
-  static Future<List<User>> getUsers() async {
+  static Future<List<Usertemp>> getUsers() async {
     const url = "https://randomuser.me/api?results=5";
     Uri uri = Uri.parse(url);
     final response = await http.get(uri);
@@ -11,7 +11,7 @@ class UserApi {
     final json = jsonDecode(body);
     final results = json['results'] as List<dynamic>;
     final users = results.map((e) {
-      return User(
+      return Usertemp(
           title: e["name"]["title"],
           firstName: e["name"]["first"],
           lastName: e["name"]["last"],

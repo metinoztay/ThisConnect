@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:thisconnect/models/qr_model.dart';
 import 'package:thisconnect/screens/chat_screen.dart';
 import 'package:thisconnect/screens/help_screen.dart';
 import 'package:thisconnect/screens/home_screen.dart';
@@ -10,6 +11,7 @@ import 'package:thisconnect/screens/messages_screen.dart';
 import 'package:thisconnect/screens/onboarding_screen.dart';
 import 'package:thisconnect/screens/profile_menu_screen.dart';
 import 'package:thisconnect/screens/qr_list_screen.dart';
+import 'package:thisconnect/screens/qr_result_screen.dart';
 import 'package:thisconnect/screens/qr_scanner_screen.dart';
 import 'screens/splash_screen.dart';
 
@@ -33,7 +35,12 @@ class ThisConnect extends StatelessWidget {
               backgroundColor: Colors.blue,
               elevation: 20,
               iconTheme: IconThemeData(color: Colors.white))),
-      home: const SplashScreen(),
+      home: QRResultScreen(
+        qrCodeId: "eba7af22-73d5-4477-bd84-b31c554eb359",
+        loadScan: () {
+          null;
+        },
+      ),
       routes: {
         '/login': (context) => const LoginScreen(),
         '/help': (context) => const HelpScreen(),

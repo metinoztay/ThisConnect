@@ -8,11 +8,11 @@ using System.Xml;
 
 [Route("api/[controller]")]
 [ApiController]
-public class MyEntitiesController : ControllerBase
+public class QRController : ControllerBase
 {
 	private readonly DbThisconnectContext _context;
 
-	public MyEntitiesController(DbThisconnectContext context)
+	public QRController(DbThisconnectContext context)
 	{
 		_context = context;
 	}
@@ -24,9 +24,14 @@ public class MyEntitiesController : ControllerBase
 	}
 
 	[HttpGet("{id}")]
-	public async Task<ActionResult<TblQr>> GetMyEntity(string id)
+	public async Task<ActionResult<TblQr>> GetQRByID(string id)
 	{
 		var myEntity = await _context.TblQrs.FindAsync(id);
+		TblUser tempUser = new TblUser();
+		tempUser = await _context.TblUsers.FindAsync(myEntity.UserId);
+		tempUser.TblQrs = null;
+		myEntity.User = tempUser;
+
 
 		if (myEntity == null)
 		{
