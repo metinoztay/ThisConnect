@@ -42,7 +42,7 @@ public class QRController : ControllerBase
 	}
 
 	[HttpPost]
-	public async Task<ActionResult<TblQr>> PostMyEntity(TblQr myEntity)
+	public async Task<ActionResult<TblQr>> AddQR(TblQr myEntity)
 	{
 		_context.TblQrs.Add(myEntity);
 		await _context.SaveChangesAsync();

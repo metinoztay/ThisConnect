@@ -35,4 +35,24 @@ class ApiHandler {
             avatarUrl: json["user"]["avatarUrl"],
             lastSeenAt: json["user"]["lastSeenAt"]));
   }
+
+  static Future<User> getUserInformation(String userId) async {
+    String url = "https://10.0.2.2:7049/api/user/$userId";
+    Uri uri = Uri.parse(url);
+    final response = await http.get(uri);
+    final body = response.body;
+    final json = jsonDecode(body);
+
+    return User(
+        userId: json["userId"],
+        phone: json["phone"],
+        email: json["email"],
+        title: json["title"],
+        name: json["name"],
+        surname: json["surname"],
+        createdAt: json["createdAt"],
+        updatedAt: json["updatedAt"],
+        avatarUrl: json["avatarUrl"],
+        lastSeenAt: json["lastSeenAt"]);
+  }
 }

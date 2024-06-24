@@ -35,12 +35,7 @@ class ThisConnect extends StatelessWidget {
               backgroundColor: Colors.blue,
               elevation: 20,
               iconTheme: IconThemeData(color: Colors.white))),
-      home: QRResultScreen(
-        qrCodeId: "eba7af22-73d5-4477-bd84-b31c554eb359",
-        loadScan: () {
-          null;
-        },
-      ),
+      home: const MainScreen(),
       routes: {
         '/login': (context) => const LoginScreen(),
         '/help': (context) => const HelpScreen(),

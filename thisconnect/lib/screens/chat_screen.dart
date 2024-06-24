@@ -4,19 +4,25 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:thisconnect/models/messageModel.dart';
+import 'package:thisconnect/models/user_model.dart';
+import 'package:thisconnect/services/api_handler.dart';
 import 'package:thisconnect/utils/removeMessageExtraChar.dart';
 import 'package:thisconnect/widgets/chatMessageListWidget.dart';
 import 'package:signalr_core/signalr_core.dart';
 import 'package:thisconnect/widgets/chatTypeMessageWidget.dart';
 
 class ChatScreen extends StatefulWidget {
+  final String recieverId;
+  final String senderId = "1";
   final String userName;
-  const ChatScreen(this.userName, {Key? key}) : super(key: key);
+  const ChatScreen(this.userName, this.recieverId, {super.key});
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  User? reciever;
+  //late User sender;
   ScrollController chatListScrollController = new ScrollController();
   TextEditingController messageTextController = TextEditingController();
   // Şu anki kullanıcının ID'si
@@ -25,6 +31,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
+    getUserInformations();
     openSignalRConnection();
     createRandomId();
     messageTextController.addListener(_handleMessageChanged);
@@ -51,6 +58,9 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   submitMessageFunction() async {
+    if (reciever == null) {
+      return;
+    }
     var messageText = removeMessageExtraChar(messageTextController.text);
     await connection.invoke('SendMessage',
         args: [widget.userName, currentUserId, messageText]);
@@ -66,6 +76,13 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (reciever == null) {
+      return Scaffold(
+        body: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -74,7 +91,7 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             ClipOval(
                 child: Image.network(
-              'https://randomuser.me/api/portraits/med/men/10.jpg',
+              reciever!.avatarUrl!,
               width: 50.0,
               height: 50.0,
               fit: BoxFit.cover,
@@ -139,6 +156,20 @@ class _ChatScreenState extends State<ChatScreen> {
               curve: Curves.ease);
         });
       });
+    }
+  }
+
+  Future<void> getUserInformations() async {
+    try {
+      final recieverTemp =
+          await ApiHandler.getUserInformation(widget.recieverId);
+      //final senderTemp = await ApiHandler.getUserInformation(widget.senderId);
+      setState(() {
+        reciever = recieverTemp;
+        //sender = senderTemp;
+      });
+    } catch (e) {
+      // Handle error here
     }
   }
 }

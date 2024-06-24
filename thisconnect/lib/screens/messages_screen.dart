@@ -33,8 +33,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 Navigator.push<void>(
                   context,
                   MaterialPageRoute<void>(
-                    builder: (BuildContext context) =>
-                        const ChatScreen("Deneme"),
+                    builder: (BuildContext context) => ChatScreen(
+                        name, "be67ce6d-8f27-4b60-8cde-49af43d1cced"),
                   ),
                 );
               },
