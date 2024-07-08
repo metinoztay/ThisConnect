@@ -7333,7 +7333,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Jonas\\.nuget\\packages\\": {}
+    "C:\\Users\\Metin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
@@ -7341,11 +7341,11 @@
       "projectUniqueName": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\ThisConnect_WebApi.csproj",
       "projectName": "ThisConnect_WebApi",
       "projectPath": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\ThisConnect_WebApi.csproj",
-      "packagesPath": "C:\\Users\\Jonas\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\Metin\\.nuget\\packages\\",
       "outputPath": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Jonas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Metin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

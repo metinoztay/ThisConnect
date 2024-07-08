@@ -1,6 +1,6 @@
 import 'package:thisconnect/models/user_model.dart';
 
-class QRInformation {
+class QR {
   final String qrId;
 
   final String userId;
@@ -23,7 +23,7 @@ class QRInformation {
 
   final User user;
 
-  const QRInformation({
+  const QR({
     required this.qrId,
     required this.userId,
     required this.title,

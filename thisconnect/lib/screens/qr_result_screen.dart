@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:thisconnect/models/qr_model.dart';
 import 'package:thisconnect/models/user_model.dart';
+import 'package:thisconnect/screens/chat_screen.dart';
 import 'package:thisconnect/services/api_handler.dart';
 
 class QRResultScreen extends StatefulWidget {
@@ -16,7 +17,7 @@ class QRResultScreen extends StatefulWidget {
 }
 
 class _QRResultScreenState extends State<QRResultScreen> {
-  late QRInformation _qrInformation;
+  late QR _qrInformation;
   String fullName = "";
   bool isLoading = true;
 
@@ -198,7 +199,14 @@ class _QRResultScreenState extends State<QRResultScreen> {
                             backgroundColor: Colors.blue,
                           ),
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.push<void>(
+                              context,
+                              MaterialPageRoute<void>(
+                                builder: (BuildContext context) => ChatScreen(
+                                    "QR Result Screen",
+                                    "be67ce6d-8f27-4b60-8cde-49af43d1cced"),
+                              ),
+                            );
                           },
                           child: const Text(
                             "Connect!",

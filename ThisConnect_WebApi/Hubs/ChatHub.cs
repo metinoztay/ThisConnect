@@ -8,7 +8,7 @@ namespace ThisConnect_WebApi.Hubs
     {
 		public async Task SendMessage(string UserName, int RandomUserId, string Message)
 		{
-			deneme();
+			//deneme();
 			MessageModel MessageModel = new MessageModel
 			{
 				CreateDate = DateTime.Now,

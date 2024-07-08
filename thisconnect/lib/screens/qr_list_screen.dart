@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:thisconnect/models/qr.dart';
+import 'package:thisconnect/models/qr_model.dart';
 import 'package:thisconnect/screens/qr_viewing_screen.dart';
+import 'package:thisconnect/services/api_handler.dart';
 
 class QRListScreen extends StatefulWidget {
   const QRListScreen({super.key});
@@ -10,9 +11,9 @@ class QRListScreen extends StatefulWidget {
 }
 
 class _QRListScreenState extends State<QRListScreen> {
-  List<QR> qrList = [];
-  List<String> itemMaps = ['/main', '/main', '/chat', '/chat', '/chat'];
-
+  List<QR> _qrList = [];
+  String newQRtitle = '';
+  String userId = "febcb8a6-937d-4aa9-a659-5c90d7c66b4b";
   @override
   void initState() {
     super.initState();
@@ -32,17 +33,18 @@ class _QRListScreenState extends State<QRListScreen> {
           children: [
             Expanded(
               child: ListView.builder(
-                itemCount: qrList.length,
+                itemCount: _qrList.length,
                 itemBuilder: (context, index) {
-                  final item = qrList[index];
+                  final item = _qrList[index];
                   return Column(
                     children: [
                       GestureDetector(
                         onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (_) =>
-                                    QRViewingScreen(qrCode: "QR CODE"))),
+                                builder: (_) => QRViewingScreen(
+                                    qrId: item.qrId,
+                                    updateQRList: loadQRList))),
                         child: ListTile(
                           title: Row(
                             children: [
@@ -83,27 +85,35 @@ class _QRListScreenState extends State<QRListScreen> {
               onPressed: () {
                 showDialog(
                   context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text(
-                      'Create QR',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    content: const TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Enter title',
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text(
+                        'Create QR',
+                        style: TextStyle(fontSize: 20),
                       ),
-                    ),
-                    actions: [
-                      ElevatedButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text('Create'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          foregroundColor: Colors.white,
+                      content: TextField(
+                        onChanged: (value) {
+                          newQRtitle = value;
+                        },
+                        decoration: const InputDecoration(
+                          hintText: 'Enter title',
                         ),
                       ),
-                    ],
-                  ),
+                      actions: [
+                        ElevatedButton(
+                          onPressed: () {
+                            addQR();
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Create'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            foregroundColor: Colors.white,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 );
               },
               style: ElevatedButton.styleFrom(
@@ -130,13 +140,30 @@ class _QRListScreenState extends State<QRListScreen> {
     );
   }
 
-  loadQRList() {
-    qrList = [
-      QR(title: 'QR 1', image: 'https://picsum.photos/200/300'),
-      QR(title: 'QR 2', image: 'https://picsum.photos/200/300'),
-      QR(title: 'QR 3', image: 'https://picsum.photos/200/300'),
-      QR(title: 'QR 4', image: 'https://picsum.photos/200/300'),
-      QR(title: 'QR 5', image: 'https://picsum.photos/200/300'),
-    ];
+  Future<void> loadQRList() async {
+    final results = await ApiHandler.getUsersQRList(userId);
+    setState(() {
+      _qrList = results;
+    });
+  }
+
+  Future<void> addQR() async {
+    final results = await ApiHandler.addQR(
+      QR(
+          qrId: "test",
+          userId: userId,
+          title: newQRtitle,
+          shareEmail: false,
+          sharePhone: false,
+          shareNote: false,
+          note: "Note",
+          createdAt: DateTime.now().toString(),
+          isActive: true,
+          user: await ApiHandler.getUserInformation(userId)),
+    );
+
+    setState(() {
+      loadQRList();
+    });
   }
 }

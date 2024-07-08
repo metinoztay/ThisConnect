@@ -35,7 +35,7 @@ class ThisConnect extends StatelessWidget {
               backgroundColor: Colors.blue,
               elevation: 20,
               iconTheme: IconThemeData(color: Colors.white))),
-      home: const MainScreen(),
+      home: MainScreen(),
       routes: {
         '/login': (context) => const LoginScreen(),
         '/help': (context) => const HelpScreen(),
