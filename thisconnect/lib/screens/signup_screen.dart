@@ -1,4 +1,13 @@
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thisconnect/models/user_model.dart';
+import 'package:thisconnect/screens/main_screen.dart';
+import 'package:thisconnect/services/api_handler.dart';
+import 'package:thisconnect/services/pref_handler.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -8,6 +17,10 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController surnameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   String dropdownValue = 'One';
 
   @override
@@ -46,10 +59,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                const TextField(
-                  style: TextStyle(
+                TextField(
+                  controller: nameController,
+                  style: const TextStyle(
                       color: Colors.black, fontWeight: FontWeight.w500),
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       hintText: "Name",
@@ -62,10 +76,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                const TextField(
-                  style: TextStyle(
+                TextField(
+                  controller: surnameController,
+                  style: const TextStyle(
                       color: Colors.black, fontWeight: FontWeight.bold),
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       hintText: "Surname",
@@ -125,10 +140,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                const TextField(
-                  style: TextStyle(
+                TextField(
+                  controller: emailController,
+                  style: const TextStyle(
                       color: Colors.black, fontWeight: FontWeight.w500),
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       hintText: "Email",
@@ -141,8 +157,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(
                   height: 10,
                 ),
+                TextField(
+                  controller: phoneController,
+                  style: const TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.w500),
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      hintText: "Phone",
+                      hintStyle: TextStyle(color: Colors.grey),
+                      prefixIcon: IconButton(
+                        onPressed: null,
+                        icon: Icon(Icons.phone_outlined),
+                      )),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    createUser();
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MainScreen(),
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(20),
                     shape: RoundedRectangleBorder(
@@ -170,5 +211,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> createUser() async {
+    //text fieldlar kontrol edilecek
+    User user = User(
+      userId: "",
+      name: nameController.text,
+      surname: surnameController.text,
+      title: dropdownValue,
+      email: emailController.text,
+      phone: phoneController.text,
+      createdAt: "",
+      updatedAt: "",
+      lastSeenAt: "",
+    );
+    await ApiHandler.createUser(user);
   }
 }

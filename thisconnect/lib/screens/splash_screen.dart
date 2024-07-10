@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:thisconnect/screens/home_screen.dart';
+import 'package:thisconnect/models/user_model.dart';
 import 'package:thisconnect/screens/main_screen.dart';
 import 'package:thisconnect/screens/onboarding_screen.dart';
+import 'package:thisconnect/services/pref_handler.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -15,25 +16,31 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   bool isIntroducted = false;
+  User? user; // 'late' yerine nullable olarak değiştirildi
 
-  void checkIsIntroducted() async {
+  void checkIsIntroductedandLogin() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    //await prefs.clear();
     isIntroducted = prefs.getBool('isIntroducted') ?? false;
+    await getPrefUserInformation(); // Asenkron işlevi bekleyin
+    if (user != null) {
+      await Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const MainScreen()),
+      );
+    } else {
+      await Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const OnBoardingScreen()),
+      );
+    }
   }
 
   @override
   void initState() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     super.initState();
-    checkIsIntroducted();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
-    Future.delayed(const Duration(seconds: 1), () {
-      isIntroducted
-          ? Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => const MainScreen()))
-          : Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (_) => const OnBoardingScreen(),
-            ));
+    Future.delayed(const Duration(seconds: 1), () async {
+      checkIsIntroductedandLogin();
     });
   }
 
@@ -44,6 +51,7 @@ class _SplashScreenState extends State<SplashScreen>
         overlays: SystemUiOverlay.values);
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -74,5 +82,23 @@ class _SplashScreenState extends State<SplashScreen>
             ],
           )),
     );
+  }
+
+  Future<void> getPrefUserInformation() async {
+    var temp = await PrefHandler.getPrefUserInformation();
+    if (temp != null) {
+      setState(() {
+        user = User(
+          userId: temp.userId,
+          phone: temp.phone,
+          email: temp.email,
+          title: temp.title,
+          name: temp.name,
+          surname: temp.surname,
+          createdAt: temp.createdAt,
+          lastSeenAt: temp.lastSeenAt,
+        );
+      });
+    }
   }
 }

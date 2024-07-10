@@ -25,7 +25,9 @@ public partial class TblUser
 
     public string LastSeenAt { get; set; } = null!;
 
-    public virtual TblChatRoomParticipant? TblChatRoomParticipant { get; set; }
+    public virtual ICollection<TblChatRoom> TblChatRoomParticipant1s { get; set; } = new List<TblChatRoom>();
+
+    public virtual ICollection<TblChatRoom> TblChatRoomParticipant2s { get; set; } = new List<TblChatRoom>();
 
     public virtual ICollection<TblMessage> TblMessageRecieverUsers { get; set; } = new List<TblMessage>();
 

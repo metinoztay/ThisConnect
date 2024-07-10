@@ -19,9 +19,9 @@ public partial class DbThisconnectContext : DbContext
 
     public virtual DbSet<TblChatRoom> TblChatRooms { get; set; }
 
-    public virtual DbSet<TblChatRoomParticipant> TblChatRoomParticipants { get; set; }
-
     public virtual DbSet<TblMessage> TblMessages { get; set; }
+
+    public virtual DbSet<TblOtp> TblOtps { get; set; }
 
     public virtual DbSet<TblQr> TblQrs { get; set; }
 
@@ -61,6 +61,7 @@ public partial class DbThisconnectContext : DbContext
 
             entity.Property(e => e.ChatRoomId)
                 .HasMaxLength(40)
+                .HasDefaultValueSql("uuid_generate_v4()")
                 .HasColumnName("CHAT_ROOM_ID");
             entity.Property(e => e.CreatedAt)
                 .HasMaxLength(19)
@@ -68,39 +69,26 @@ public partial class DbThisconnectContext : DbContext
             entity.Property(e => e.LastMessageId)
                 .HasMaxLength(40)
                 .HasColumnName("LAST_MESSAGE_ID");
+            entity.Property(e => e.Participant1Id)
+                .HasMaxLength(40)
+                .HasColumnName("PARTICIPANT1_ID");
+            entity.Property(e => e.Participant2Id)
+                .HasMaxLength(40)
+                .HasColumnName("PARTICIPANT2_ID");
 
             entity.HasOne(d => d.LastMessage).WithMany(p => p.TblChatRooms)
                 .HasForeignKey(d => d.LastMessageId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("TBL_CHAT_ROOMS_LAST_MESSAGE_ID_fkey");
-        });
 
-        modelBuilder.Entity<TblChatRoomParticipant>(entity =>
-        {
-            entity.HasKey(e => e.ChatRoomParticipantId).HasName("TBL_CHAT_ROOM_PARTICIPANTS_pkey");
-
-            entity.ToTable("TBL_CHAT_ROOM_PARTICIPANTS");
-
-            entity.Property(e => e.ChatRoomParticipantId)
-                .HasMaxLength(40)
-                .HasDefaultValueSql("uuid_generate_v4()")
-                .HasColumnName("CHAT_ROOM_PARTICIPANT_ID");
-            entity.Property(e => e.ChatRoomId)
-                .HasMaxLength(40)
-                .HasColumnName("CHAT_ROOM_ID");
-            entity.Property(e => e.ParticipantId)
-                .HasMaxLength(40)
-                .HasColumnName("PARTICIPANT_ID");
-
-            entity.HasOne(d => d.ChatRoom).WithMany(p => p.TblChatRoomParticipants)
-                .HasForeignKey(d => d.ChatRoomId)
+            entity.HasOne(d => d.Participant1).WithMany(p => p.TblChatRoomParticipant1s)
+                .HasForeignKey(d => d.Participant1Id)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("TBL_CHAT_ROOM_PARTICIPANTS_CHAT_ROOM_ID_fkey");
+                .HasConstraintName("TBL_CHAT_ROOMS_PARTICIPANT1_ID_fkey");
 
-            entity.HasOne(d => d.ChatRoomParticipant).WithOne(p => p.TblChatRoomParticipant)
-                .HasForeignKey<TblChatRoomParticipant>(d => d.ChatRoomParticipantId)
+            entity.HasOne(d => d.Participant2).WithMany(p => p.TblChatRoomParticipant2s)
+                .HasForeignKey(d => d.Participant2Id)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("TBL_CHAT_ROOM_PARTICIPANTS_CHAT_ROOM_PARTICIPANT_ID_fkey");
+                .HasConstraintName("TBL_CHAT_ROOMS_PARTICIPANT2_ID_fkey");
         });
 
         modelBuilder.Entity<TblMessage>(entity =>
@@ -153,6 +141,30 @@ public partial class DbThisconnectContext : DbContext
                 .HasForeignKey(d => d.SenderUserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("TBL_MESSAGES_SENDER_USER_ID_fkey");
+        });
+
+        modelBuilder.Entity<TblOtp>(entity =>
+        {
+            entity.HasKey(e => e.OtpId).HasName("TBL_OTP_pkey");
+
+            entity.ToTable("TBL_OTP");
+
+            entity.Property(e => e.OtpId)
+                .HasMaxLength(40)
+                .HasDefaultValueSql("uuid_generate_v4()")
+                .HasColumnName("OTP_ID");
+            entity.Property(e => e.ExpirationTime)
+                .HasMaxLength(19)
+                .IsFixedLength()
+                .HasColumnName("EXPIRATION_TIME");
+            entity.Property(e => e.OtpValue)
+                .HasMaxLength(6)
+                .IsFixedLength()
+                .HasColumnName("OTP_VALUE");
+            entity.Property(e => e.Phone)
+                .HasMaxLength(10)
+                .IsFixedLength()
+                .HasColumnName("PHONE");
         });
 
         modelBuilder.Entity<TblQr>(entity =>

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:thisconnect/models/chatroom_model.dart';
 import 'package:thisconnect/models/messageModel.dart';
 import 'package:thisconnect/models/user_model.dart';
 import 'package:thisconnect/services/api_handler.dart';
@@ -12,18 +13,18 @@ import 'package:signalr_core/signalr_core.dart';
 import 'package:thisconnect/widgets/chatTypeMessageWidget.dart';
 
 class ChatScreen extends StatefulWidget {
-  final String recieverId;
-  final String senderId = "1";
+  final ChatRoom chatRoom;
+  final User user;
   final String userName;
-  const ChatScreen(this.userName, this.recieverId, {super.key});
+  const ChatScreen(this.userName, this.user, this.chatRoom, {super.key});
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  User? reciever;
+  User? reciever; // Nullable User type
   //late User sender;
-  ScrollController chatListScrollController = new ScrollController();
+  ScrollController chatListScrollController = ScrollController();
   TextEditingController messageTextController = TextEditingController();
   // Şu anki kullanıcının ID'si
   bool isMessageEmpty = true;
@@ -45,19 +46,20 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void _handleMessageChanged() {
-    setState(() {
-      isMessageEmpty = messageTextController.text.trim().isEmpty;
-    });
+    if (mounted) {
+      setState(() {
+        isMessageEmpty = messageTextController.text.trim().isEmpty;
+      });
+    }
   }
 
   int currentUserId = 0;
-  //generate random user id
-  createRandomId() {
+  void createRandomId() {
     Random random = Random();
     currentUserId = random.nextInt(999999);
   }
-
-  submitMessageFunction() async {
+/*
+  Future<void> submitMessageFunction() async {
     if (reciever == null) {
       return;
     }
@@ -69,7 +71,29 @@ class _ChatScreenState extends State<ChatScreen> {
     Future.delayed(const Duration(milliseconds: 50), () {
       chatListScrollController.animateTo(
           chatListScrollController.position.maxScrollExtent,
-          duration: Duration(milliseconds: 500),
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.ease);
+    });
+  }
+*/
+
+  Future<void> submitMessageFunction() async {
+    if (reciever == null) {
+      return;
+    }
+    var messageText = removeMessageExtraChar(messageTextController.text);
+    await connection.invoke('SendMessage', args: [
+      widget.chatRoom.chatRoomId,
+      widget.userName,
+      currentUserId,
+      messageText
+    ]);
+    messageTextController.text = "";
+
+    Future.delayed(const Duration(milliseconds: 50), () {
+      chatListScrollController.animateTo(
+          chatListScrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 500),
           curve: Curves.ease);
     });
   }
@@ -99,10 +123,21 @@ class _ChatScreenState extends State<ChatScreen> {
             const SizedBox(
               width: 10,
             ),
-            const Text(
-              'Brent Brewer',
-              style: TextStyle(color: Colors.white, fontSize: 18),
-            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "${reciever!.title}",
+                  style: const TextStyle(
+                      color: Colors.white, fontSize: 15, letterSpacing: 1),
+                ),
+                Text(
+                  "${reciever!.name} ${reciever!.surname}",
+                  style: const TextStyle(
+                      color: Colors.white, fontSize: 18, letterSpacing: 1),
+                )
+              ],
+            )
           ],
         ),
       ),
@@ -131,45 +166,57 @@ class _ChatScreenState extends State<ChatScreen> {
             skipNegotiation: true,
           ))
       .build();
-
-  //connect to signalR
+/*
   Future<void> openSignalRConnection() async {
     await connection.start();
     connection.on('ReceiveMessage', (message) {
       _handleIncommingDriverLocation(message);
     });
     await connection.invoke('JoinUSer', args: [widget.userName, currentUserId]);
+  }*/
+
+  Future<void> openSignalRConnection() async {
+    await connection.start();
+    connection.on('ReceiveMessage', (message) {
+      _handleIncommingDriverLocation(message);
+    });
+    await connection.invoke('JoinRoom', args: [widget.chatRoom.chatRoomId]);
   }
 
-  //get messages
   List<MessageModel> messageModel = [];
   Future<void> _handleIncommingDriverLocation(List<dynamic>? args) async {
     if (args != null) {
       var jsonResponse = json.decode(json.encode(args[0]));
       MessageModel data = MessageModel.fromJson(jsonResponse);
-      setState(() {
-        messageModel.add(data);
-        Future.delayed(const Duration(milliseconds: 50), () {
-          chatListScrollController.animateTo(
-              chatListScrollController.position.maxScrollExtent,
-              duration: Duration(milliseconds: 500),
-              curve: Curves.ease);
+      if (mounted) {
+        setState(() {
+          messageModel.add(data);
+          Future.delayed(const Duration(milliseconds: 50), () {
+            chatListScrollController.animateTo(
+                chatListScrollController.position.maxScrollExtent,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.ease);
+          });
         });
-      });
+      }
     }
   }
 
   Future<void> getUserInformations() async {
     try {
-      final recieverTemp =
-          await ApiHandler.getUserInformation(widget.recieverId);
+      final recieverTemp = await ApiHandler.getUserInformation(
+          widget.chatRoom.participant1Id == widget.user.userId
+              ? widget.chatRoom.participant1Id
+              : widget.chatRoom.participant2Id);
       //final senderTemp = await ApiHandler.getUserInformation(widget.senderId);
-      setState(() {
-        reciever = recieverTemp;
-        //sender = senderTemp;
-      });
+      if (mounted) {
+        setState(() {
+          reciever = recieverTemp;
+          //sender = senderTemp;
+        });
+      }
     } catch (e) {
-      // Handle error here
+      // Handle the error here
     }
   }
 }

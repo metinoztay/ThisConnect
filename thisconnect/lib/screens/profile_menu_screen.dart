@@ -1,6 +1,4 @@
 import 'package:thisconnect/models/profileitem.dart';
-import 'package:thisconnect/models/user.dart';
-import 'package:thisconnect/services/user_api.dart';
 import 'package:flutter/material.dart';
 
 class ProfileMenuScreen extends StatefulWidget {
@@ -12,7 +10,7 @@ class ProfileMenuScreen extends StatefulWidget {
 
 class _ProfileMenuScreenState extends State<ProfileMenuScreen> {
   List<Profileitem> profileItems = [];
-  List<String> itemMaps = ['/main', '/qrList', '/chat', '/help', '/login'];
+  List<String> itemMaps = ['/profile', '/qrList', '/chat', '/help', '/login'];
   @override
   void initState() {
     super.initState();

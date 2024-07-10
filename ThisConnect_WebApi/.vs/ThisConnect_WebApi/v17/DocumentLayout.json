@@ -3,20 +3,28 @@
   "WorkspaceRootPath": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\controllers\\qrcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:controllers\\qrcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\models\\tempqrmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:models\\tempqrmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\controllers\\otpcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:controllers\\otpcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\models\\tblqr.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:models\\tblqr.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\controllers\\qrcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:controllers\\qrcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\models\\tbluser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:models\\tbluser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\models\\tempuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:models\\tempuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,7 +34,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -34,29 +42,40 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "TempQRModel.cs",
-              "DocumentMoniker": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Models\\TempQRModel.cs",
-              "RelativeDocumentMoniker": "Models\\TempQRModel.cs",
-              "ToolTip": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Models\\TempQRModel.cs",
-              "RelativeToolTip": "Models\\TempQRModel.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAsAAAA",
+              "DocumentIndex": 0,
+              "Title": "ChatHub.cs",
+              "DocumentMoniker": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Hubs\\ChatHub.cs",
+              "RelativeDocumentMoniker": "Hubs\\ChatHub.cs",
+              "ToolTip": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Hubs\\ChatHub.cs",
+              "RelativeToolTip": "Hubs\\ChatHub.cs",
+              "ViewState": "AQIAABIAAAAAAAAAAAAYwCEAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-08T08:13:20.432Z",
+              "WhenOpened": "2024-07-10T11:46:16.209Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "TblQr.cs",
-              "DocumentMoniker": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Models\\TblQr.cs",
-              "RelativeDocumentMoniker": "Models\\TblQr.cs",
-              "ToolTip": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Models\\TblQr.cs",
-              "RelativeToolTip": "Models\\TblQr.cs",
-              "ViewState": "AQIAAA8AAAAAAAAAAAA7wBsAAAA2AAAA",
+              "DocumentIndex": 5,
+              "Title": "TempUser.cs",
+              "DocumentMoniker": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Models\\TempUser.cs",
+              "RelativeDocumentMoniker": "Models\\TempUser.cs",
+              "ToolTip": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Models\\TempUser.cs",
+              "RelativeToolTip": "Models\\TempUser.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAyAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-08T07:53:53.006Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-09T16:21:04.036Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "TblUser.cs",
+              "DocumentMoniker": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Models\\TblUser.cs",
+              "RelativeDocumentMoniker": "Models\\TblUser.cs",
+              "ToolTip": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Models\\TblUser.cs",
+              "RelativeToolTip": "Models\\TblUser.cs",
+              "ViewState": "AQIAAAkAAAAAAAAAAAA1wBkAAAAzAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-09T16:20:42.273Z"
             },
             {
               "$type": "Document",
@@ -66,20 +85,33 @@
               "RelativeDocumentMoniker": "Controllers\\UserController.cs",
               "ToolTip": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Controllers\\UserController.cs",
               "RelativeToolTip": "Controllers\\UserController.cs",
-              "ViewState": "AQIAAEIAAAAAAAAAAAAowEoAAAAWAAAA",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAAEUAAAA8AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-22T21:57:43.955Z",
+              "WhenOpened": "2024-07-09T16:18:49.884Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
+              "Title": "OTPController.cs",
+              "DocumentMoniker": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Controllers\\OTPController.cs",
+              "RelativeDocumentMoniker": "Controllers\\OTPController.cs",
+              "ToolTip": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Controllers\\OTPController.cs",
+              "RelativeToolTip": "Controllers\\OTPController.cs",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAuwBYAAAAMAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-09T08:51:59.092Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "QRController.cs",
               "DocumentMoniker": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Controllers\\QRController.cs",
               "RelativeDocumentMoniker": "Controllers\\QRController.cs",
               "ToolTip": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Controllers\\QRController.cs",
               "RelativeToolTip": "Controllers\\QRController.cs",
-              "ViewState": "AQIAAIIAAAAAAAAAAAAcwIwAAAAJAAAA",
+              "ViewState": "AQIAABYAAAAAAAAAAAAQwBoAAAATAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-06-21T19:25:42.725Z",
               "EditorCaption": ""

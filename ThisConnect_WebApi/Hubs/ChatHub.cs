@@ -6,6 +6,33 @@ namespace ThisConnect_WebApi.Hubs
 {
     public class ChatHub:Hub
     {
+        public async Task JoinRoom(string chatRoomId)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, chatRoomId);
+        }
+
+        public async Task LeaveRoom(string chatRoomId)
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, chatRoomId);
+        }
+
+        public async Task SendMessage(string chatRoomId, string userName, int randomUserId, string message)
+        {
+            var messageModel = new MessageModel
+            {
+                CreateDate = DateTime.Now,
+                MessageText = message,
+                UserId = randomUserId,
+                UserName = userName
+            };
+            await Clients.Group(chatRoomId).SendAsync("ReceiveMessage", messageModel);
+        }
+
+
+
+
+
+        /*
 		public async Task SendMessage(string UserName, int RandomUserId, string Message)
 		{
 			//deneme();
@@ -61,6 +88,6 @@ namespace ThisConnect_WebApi.Hubs
 			}
 		}
 		
-
-	}
+		*/
+    }
 }

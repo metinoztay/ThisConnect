@@ -35,16 +35,28 @@ namespace ThisConnect_WebApi.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> CreateUser([FromBody] TblUser user)
+		public async Task<ActionResult<TblUser>> CreateUser([FromBody] TempUser temp)
 		{
-			if (user == null)
+			if (temp == null)
 			{
 				return BadRequest();
 			}
 
+			TblUser user = new TblUser();
+			user.Phone = temp.Phone;
+			user.Email = temp.Email;
+			user.Title = temp.Title;
+			user.Name = temp.Name;
+			user.Surname = temp.Surname;
+			user.AvatarUrl = temp.AvatarUrl;
+			user.CreatedAt = DateTime.Now.ToString();
+			user.UpdatedAt = null;
+			user.LastSeenAt = DateTime.Now.ToString();
+			
 			await _context.TblUsers.AddAsync(user);
 			await _context.SaveChangesAsync();
-			return CreatedAtAction(nameof(GetUserById), new { id = user.UserId }, user);
+
+			return Ok(user);
 		}
 
 		[HttpPut("{id}")]

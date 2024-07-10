@@ -79,8 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       initialCountryCode: 'TR',
                       onChanged: (phone) {
-                        phoneController.value =
-                            phone.number as TextEditingValue;
+                        phoneController.text = phone.number.toString();
                       },
                     )
                   ]),

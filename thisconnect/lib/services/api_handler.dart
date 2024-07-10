@@ -1,9 +1,10 @@
 import 'dart:convert';
-import 'package:thisconnect/models/qr.dart';
+import 'package:thisconnect/models/chatroom_model.dart';
+import 'package:thisconnect/models/otp_model.dart';
 import 'package:thisconnect/models/qr_model.dart';
-import 'package:thisconnect/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:thisconnect/models/user_model.dart';
+import 'package:thisconnect/services/pref_handler.dart';
 
 class ApiHandler {
   static Future<QR> getQRInformation(String qrId) async {
@@ -135,14 +136,57 @@ class ApiHandler {
         lastSeenAt: json["lastSeenAt"]);
   }
 
-  static Future<List<QR>> getUsersQRList(String userId) async {
+  static Future<User?> otpVerification(Otp otp) async {
+    String url = "https://10.0.2.2:7049/api/otp/otpverification";
+    Uri uri = Uri.parse(url);
+
+    try {
+      final response = await http.post(
+        uri,
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          'phone': otp.phone,
+          'otpValue': otp.otpValue,
+        }),
+      );
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        return User(
+          userId: jsonData['userId'],
+          phone: jsonData['phone'],
+          email: jsonData['email'],
+          title: jsonData['title'],
+          name: jsonData['name'],
+          surname: jsonData['surname'],
+          createdAt: jsonData['createdAt'],
+          lastSeenAt: jsonData['lastSeenAt'],
+        );
+      } else {
+        print('Failed to verify OTP: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('Error verifying OTP: $e');
+      return null;
+    }
+  }
+
+  static Future<List<QR>?> getUsersQRList(String userId) async {
     String url = "https://10.0.2.2:7049/api/QR/byuserid/$userId";
     Uri uri = Uri.parse(url);
     final response = await http.get(uri);
     final body = response.body;
     final json = jsonDecode(body);
     final results = json['\$values'] as List<dynamic>;
-    final user = await getUserInformation(results[0]["userId"]);
+    final user;
+    try {
+      user = await getUserInformation(results[0]["userId"]);
+    } catch (e) {
+      return null;
+    }
+
     final qrlist = await Future.wait(results.map((e) async {
       return QR(
           qrId: e["qrId"],
@@ -158,5 +202,163 @@ class ApiHandler {
           user: user);
     }));
     return qrlist;
+  }
+
+  static Future<bool> createChatRoom(ChatRoom chatRoom) async {
+    String url = "https://10.0.2.2:7049/api/ChatRoom/createChatRoom";
+    Uri uri = Uri.parse(url);
+
+    try {
+      final response = await http.post(
+        uri,
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          'chatRoomId': "",
+          'participant1Id': chatRoom.participant1Id,
+          'participant2Id': chatRoom.participant2Id,
+          'lastMessageId': null,
+          'createdAt': "",
+        }),
+      );
+
+      if (response.statusCode == 201) {
+        return true;
+      } else {
+        print('Failed to create chat room: ${response.statusCode}');
+        return false;
+      }
+    } catch (e) {
+      print('Error creating chat room: $e');
+      return false;
+    }
+  }
+
+  static Future<ChatRoom?> findChatRoom(ChatRoom chatRoom) async {
+    String url = "https://10.0.2.2:7049/api/ChatRoom/findChatRoom";
+    Uri uri = Uri.parse(url);
+
+    try {
+      final response = await http.post(
+        uri,
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          'chatRoomId': "",
+          'lastMessageId': "",
+          'createdAt': "",
+          'participant1Id': chatRoom.participant1Id,
+          'participant2Id': chatRoom.participant2Id,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        var result = ChatRoom(
+          participant1Id: chatRoom.participant1Id,
+          participant2Id: chatRoom.participant2Id,
+          chatRoomId: jsonDecode(response.body)['chatRoomId'],
+          lastMessageId: jsonDecode(response.body)['lastMessageId'],
+          createdAt: jsonDecode(response.body)['createdAt'],
+        );
+        return result;
+      } else if (response.statusCode == 404) {
+        print('No chat room found for these participants.');
+        return null;
+      } else {
+        print('Failed to find chat room: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('Error finding chat room: $e');
+      return null;
+    }
+  }
+
+  static Future<void> createUser(User user) async {
+    String url = "https://10.0.2.2:7049/api/user";
+    Uri uri = Uri.parse(url);
+
+    try {
+      final response = await http.post(
+        uri,
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          "userId": "",
+          "phone": user.phone,
+          "email": user.email,
+          "title": user.title,
+          "name": user.name,
+          "surname": user.surname,
+          "avatarUrl":
+              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+          "createdAt": "",
+          "updatedAt": "",
+          "lastSeenAt": " "
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        var json = jsonDecode(response.body);
+        var result = User(
+          userId: json['userId'],
+          phone: json['phone'],
+          email: json['email'],
+          title: json['title'],
+          name: json['name'],
+          surname: json['surname'],
+          createdAt: json['createdAt'],
+          lastSeenAt: json['lastSeenAt'],
+        );
+        await PrefHandler.savePrefUserInformation(result);
+      } else if (response.statusCode == 404) {
+        print('No chat room found for these participants.');
+        return null;
+      } else {
+        print('Failed to find chat room: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('Error finding chat room: $e');
+      return null;
+    }
+  }
+
+  static Future<List<ChatRoom>> getChatRoomsByParticipant(
+      String participantId) async {
+    String url =
+        "https://10.0.2.2:7049/api/ChatRoom/getChatRoomsByParticipant?participantId=$participantId";
+    Uri uri = Uri.parse(url);
+
+    try {
+      final response = await http.get(uri);
+
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.body);
+        final results = json['\$values'] as List<dynamic>;
+        final qrlist = await Future.wait(results.map((e) async {
+          return ChatRoom(
+            participant1Id: e["participant1Id"],
+            participant2Id: e["participant2Id"],
+            chatRoomId: e["chatRoomId"],
+            lastMessageId: e["lastMessageId"],
+            createdAt: e["createdAt"],
+          );
+        }));
+        return qrlist;
+      } else if (response.statusCode == 404) {
+        print('No chat rooms found for this participant.');
+        return [];
+      } else {
+        print('Failed to retrieve chat rooms: ${response.statusCode}');
+        return [];
+      }
+    } catch (e) {
+      print('Error retrieving chat rooms: $e');
+      return [];
+    }
   }
 }

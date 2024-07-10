@@ -1,21 +1,27 @@
-import 'package:thisconnect/models/user.dart';
+import 'package:thisconnect/models/chatroom_model.dart';
+import 'package:thisconnect/models/user_model.dart';
 import 'package:thisconnect/screens/chat_screen.dart';
-import 'package:thisconnect/services/user_api.dart';
+import 'package:thisconnect/services/api_handler.dart';
 import 'package:flutter/material.dart';
+import 'package:thisconnect/services/pref_handler.dart';
 
 class MessagesScreen extends StatefulWidget {
-  const MessagesScreen({super.key});
+  final User user;
+  const MessagesScreen({super.key, required this.user});
 
   @override
   State<MessagesScreen> createState() => _MessagesScreenState();
 }
 
 class _MessagesScreenState extends State<MessagesScreen> {
-  List<Usertemp> users = [];
+  List<ChatRoom> chatRooms = [];
+
   @override
   void initState() {
     super.initState();
-    readUsers();
+    //getPrefUserInformation();
+    getChatRoomsByParticipant(widget.user.userId);
+    //readUsers();
   }
 
   @override
@@ -24,59 +30,110 @@ class _MessagesScreenState extends State<MessagesScreen> {
       body: Padding(
         padding: const EdgeInsets.all(3.0),
         child: ListView.builder(
-          itemCount: users.length,
+          itemCount: chatRooms.length,
           itemBuilder: (context, index) {
-            final user = users[index];
-            final name = user.fullName;
-            return GestureDetector(
-              onTap: () {
-                Navigator.push<void>(
-                  context,
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) => ChatScreen(
-                        name, "be67ce6d-8f27-4b60-8cde-49af43d1cced"),
-                  ),
-                );
+            Future<User> userFuture = getUserInformation(
+                chatRooms[index].participant1Id == widget.user.userId
+                    ? chatRooms[index].participant2Id
+                    : chatRooms[index].participant1Id);
+            return FutureBuilder<User>(
+              future: userFuture,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final User user = snapshot.data!;
+                  final name = "${user.name} ${user.surname}";
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push<void>(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) => ChatScreen(
+                            name,
+                            user,
+                            chatRooms[index],
+                          ),
+                        ),
+                      );
+                    },
+                    child: ListTile(
+                      title: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              user.title,
+                              textAlign: TextAlign.left,
+                              style: const TextStyle(
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              chatRooms[index].lastMessageId ?? "Null",
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
+                        ],
+                      ),
+                      leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: Image.network(user.avatarUrl!),
+                      ),
+                      subtitle: Text(
+                        name,
+                        style: const TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  );
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
               },
-              child: ListTile(
-                title: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        user.title,
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        user.messageDay,
-                        style:
-                            const TextStyle(color: Colors.grey, fontSize: 12),
-                        textAlign: TextAlign.right,
-                      ),
-                    ),
-                  ],
-                ),
-                leading: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Image.network(user.image),
-                ),
-                subtitle: Text(
-                  name,
-                  style: const TextStyle(color: Colors.black),
-                ),
-              ),
             );
           },
         ),
       ),
     );
   }
-
+/*
   Future<void> readUsers() async {
     final results = await UserApi.getUsers();
     setState(() {
       users = results;
     });
+  }*/
+
+  Future<void> getChatRoomsByParticipant(String userId) async {
+    final results = await ApiHandler.getChatRoomsByParticipant(userId);
+
+    setState(() {
+      chatRooms = results;
+    });
   }
+
+  Future<User> getUserInformation(String userId) async {
+    final result = await ApiHandler.getUserInformation(userId);
+    return result;
+  }
+/*
+  Future<void> getPrefUserInformation() async {
+    var temp = await PrefHandler.getPrefUserInformation();
+    if (temp != null) {
+      user = User(
+        userId: temp.userId,
+        phone: temp.phone,
+        email: temp.email,
+        title: temp.title,
+        name: temp.name,
+        surname: temp.surname,
+        createdAt: temp.createdAt,
+        lastSeenAt: temp.lastSeenAt,
+      );
+    }
+  }*/
 }

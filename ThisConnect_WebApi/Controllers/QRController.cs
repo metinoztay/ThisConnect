@@ -137,11 +137,10 @@ public class QRController : ControllerBase
             _context.TblQrs.Add(qrToAdd);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(UpdateQR), new { qrid = qrToAdd.QrId }, qrToAdd);
+            return CreatedAtAction(nameof(AddQR), new { qrid = qrToAdd.QrId }, qrToAdd);
         }
         catch (Exception ex)
         {
-            // Hata durumu ele al
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }

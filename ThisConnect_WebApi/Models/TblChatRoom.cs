@@ -7,13 +7,19 @@ public partial class TblChatRoom
 {
     public string ChatRoomId { get; set; } = null!;
 
-    public string LastMessageId { get; set; } = null!;
+    public string Participant1Id { get; set; } = null!;
+
+    public string Participant2Id { get; set; } = null!;
+
+    public string? LastMessageId { get; set; }
 
     public string CreatedAt { get; set; } = null!;
 
-    public virtual TblMessage LastMessage { get; set; } = null!;
+    public virtual TblMessage? LastMessage { get; set; }
 
-    public virtual ICollection<TblChatRoomParticipant> TblChatRoomParticipants { get; set; } = new List<TblChatRoomParticipant>();
+    public virtual TblUser Participant1 { get; set; } = null!;
+
+    public virtual TblUser Participant2 { get; set; } = null!;
 
     public virtual ICollection<TblMessage> TblMessages { get; set; } = new List<TblMessage>();
 }

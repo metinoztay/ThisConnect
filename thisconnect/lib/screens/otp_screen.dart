@@ -1,8 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:otp_timer_button/otp_timer_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thisconnect/models/otp_model.dart';
+import 'package:thisconnect/models/user_model.dart';
+import 'package:thisconnect/screens/main_screen.dart';
 import 'package:thisconnect/screens/signup_screen.dart';
+import 'package:thisconnect/services/api_handler.dart';
+import 'package:thisconnect/services/pref_handler.dart';
 
 class OTPScreen extends StatefulWidget {
   const OTPScreen({super.key, required this.phoneNumber});
@@ -17,6 +25,8 @@ class _OTPScreenState extends State<OTPScreen> {
       OtpTimerButtonController();
   String enteredOTP = "";
   String resendButtonText = "Resend OTP";
+  User? user; // Nullable User type
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +74,7 @@ class _OTPScreenState extends State<OTPScreen> {
               height: 20,
             ),
             OtpTextField(
-              fieldWidth: 50,
+              fieldWidth: 45,
               textStyle: const TextStyle(
                 fontSize: 24,
               ),
@@ -74,10 +84,20 @@ class _OTPScreenState extends State<OTPScreen> {
               onCodeChanged: (String code) {
                 enteredOTP = code;
               },
-              onSubmit: (String verificationCode) {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (_) => const SignUpScreen(),
-                ));
+              onSubmit: (String verificationCode) async {
+                await otpVerification(
+                    Otp(phone: widget.phoneNumber, otpValue: verificationCode));
+                if (user != null) {
+                  PrefHandler.savePrefUserInformation(user!);
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (_) => const MainScreen(),
+                  ));
+                } else {
+                  // otp mi yanlış kullanıcı mı yok kontrolü yapılacak
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (_) => const SignUpScreen(),
+                  ));
+                }
                 showDialog(
                     context: context,
                     builder: (context) {
@@ -113,5 +133,12 @@ class _OTPScreenState extends State<OTPScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> otpVerification(Otp otp) async {
+    var response = await ApiHandler.otpVerification(otp);
+    setState(() {
+      user = response;
+    });
   }
 }

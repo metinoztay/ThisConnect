@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:thisconnect/models/user_model.dart';
 import 'package:thisconnect/screens/qr_result_screen.dart';
 import 'package:thisconnect/widgets/qr_overlay.dart';
 
 class QRScannerScreen extends StatefulWidget {
-  const QRScannerScreen({super.key});
+  final User user;
+  const QRScannerScreen({required this.user, super.key});
 
   @override
   State<QRScannerScreen> createState() => _QRScannerScreenState();
@@ -83,6 +85,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
                               MaterialPageRoute(
                                   builder: (context) => QRResultScreen(
                                         qrCodeId: qrCode,
+                                        user: widget.user,
                                         loadScan: loadScan,
                                       )));
                         }
