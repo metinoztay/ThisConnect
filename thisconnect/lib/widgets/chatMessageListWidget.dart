@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:thisconnect/models/messageModel.dart';
+import 'package:thisconnect/models/message_model.dart';
 
 Widget chatMessageWidget(ScrollController chatListScrollController,
-    List<MessageModel> messageModel, int currentUserId, BuildContext context) {
+    List<Message> message, String currentUserId, BuildContext context) {
   return Expanded(
       child: Container(
     color: Colors.white,
@@ -11,7 +12,7 @@ Widget chatMessageWidget(ScrollController chatListScrollController,
       controller: chatListScrollController,
       child: Column(
         children: [
-          ...messageModel.map((e) => chatItemWidget(e, currentUserId, context)),
+          ...message.map((e) => chatItemWidget(e, currentUserId, context)),
           SizedBox(
             height: 6,
           )
@@ -21,18 +22,18 @@ Widget chatMessageWidget(ScrollController chatListScrollController,
   ));
 }
 
-Widget chatItemWidget(MessageModel e, int currentUserId, BuildContext context) {
+Widget chatItemWidget(Message e, String currentUserId, BuildContext context) {
   final size = MediaQuery.of(context).size;
-  final isMe = e.userId == currentUserId;
+  final isMe = e.senderUserId == currentUserId;
 
   final alignment = isMe ? Alignment.centerRight : Alignment.centerLeft;
 
   final color = isMe ? Colors.green : Colors.blue;
 
   final textColor = Colors.white;
-  bool isMyChat = e.userId == currentUserId;
-  return e.userId == 0
-      ? systemMessageWidget(e.messageText!)
+  bool isMyChat = e.senderUserId == currentUserId;
+  return e.senderUserId == 0
+      ? systemMessageWidget(e.content!)
       : Align(
           alignment: alignment,
           child: Container(
@@ -44,7 +45,7 @@ Widget chatItemWidget(MessageModel e, int currentUserId, BuildContext context) {
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: Text(
-              e.messageText ?? '',
+              e.content ?? '',
               style: TextStyle(color: textColor),
             ),
           ),

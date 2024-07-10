@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:thisconnect/models/chatroom_model.dart';
 import 'package:thisconnect/models/messageModel.dart';
+import 'package:thisconnect/models/message_model.dart';
 import 'package:thisconnect/models/user_model.dart';
 import 'package:thisconnect/services/api_handler.dart';
 import 'package:thisconnect/utils/removeMessageExtraChar.dart';
@@ -22,11 +23,10 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  User? reciever; // Nullable User type
-  //late User sender;
+  User? reciever;
   ScrollController chatListScrollController = ScrollController();
   TextEditingController messageTextController = TextEditingController();
-  // Şu anki kullanıcının ID'si
+
   bool isMessageEmpty = true;
 
   @override
@@ -34,7 +34,6 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
     getUserInformations();
     openSignalRConnection();
-    createRandomId();
     messageTextController.addListener(_handleMessageChanged);
   }
 
@@ -53,41 +52,24 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  int currentUserId = 0;
-  void createRandomId() {
-    Random random = Random();
-    currentUserId = random.nextInt(999999);
-  }
-/*
   Future<void> submitMessageFunction() async {
     if (reciever == null) {
       return;
     }
     var messageText = removeMessageExtraChar(messageTextController.text);
-    await connection.invoke('SendMessage',
-        args: [widget.userName, currentUserId, messageText]);
-    messageTextController.text = "";
 
-    Future.delayed(const Duration(milliseconds: 50), () {
-      chatListScrollController.animateTo(
-          chatListScrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.ease);
-    });
-  }
-*/
+    var message = {
+      'MessageId': null,
+      'ChatRoomId': widget.chatRoom.chatRoomId,
+      'SenderUserId': widget.user.userId,
+      'RecieverUserId': reciever!.userId,
+      'AttachmentId': null,
+      'Content': messageText,
+      'CreatedAt': DateTime.now().toIso8601String(),
+      'ReadedAt': null,
+    };
 
-  Future<void> submitMessageFunction() async {
-    if (reciever == null) {
-      return;
-    }
-    var messageText = removeMessageExtraChar(messageTextController.text);
-    await connection.invoke('SendMessage', args: [
-      widget.chatRoom.chatRoomId,
-      widget.userName,
-      currentUserId,
-      messageText
-    ]);
+    await connection.invoke('SendMessage', args: [message]);
     messageTextController.text = "";
 
     Future.delayed(const Duration(milliseconds: 50), () {
@@ -146,8 +128,8 @@ class _ChatScreenState extends State<ChatScreen> {
         width: size.width,
         child: Column(
           children: [
-            chatMessageWidget(
-                chatListScrollController, messageModel, currentUserId, context),
+            chatMessageWidget(chatListScrollController, messages,
+                widget.user.userId, context),
             chatTypeMessageWidget(
                 messageTextController, submitMessageFunction, isMessageEmpty),
           ],
@@ -156,7 +138,6 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  //set url and configs
   final connection = HubConnectionBuilder()
       .withUrl(
           'https://10.0.2.2:7049/chathub',
@@ -166,14 +147,6 @@ class _ChatScreenState extends State<ChatScreen> {
             skipNegotiation: true,
           ))
       .build();
-/*
-  Future<void> openSignalRConnection() async {
-    await connection.start();
-    connection.on('ReceiveMessage', (message) {
-      _handleIncommingDriverLocation(message);
-    });
-    await connection.invoke('JoinUSer', args: [widget.userName, currentUserId]);
-  }*/
 
   Future<void> openSignalRConnection() async {
     await connection.start();
@@ -183,14 +156,14 @@ class _ChatScreenState extends State<ChatScreen> {
     await connection.invoke('JoinRoom', args: [widget.chatRoom.chatRoomId]);
   }
 
-  List<MessageModel> messageModel = [];
+  List<Message> messages = [];
   Future<void> _handleIncommingDriverLocation(List<dynamic>? args) async {
     if (args != null) {
       var jsonResponse = json.decode(json.encode(args[0]));
-      MessageModel data = MessageModel.fromJson(jsonResponse);
+      Message data = Message.fromJson(jsonResponse);
       if (mounted) {
         setState(() {
-          messageModel.add(data);
+          messages.add(data);
           Future.delayed(const Duration(milliseconds: 50), () {
             chatListScrollController.animateTo(
                 chatListScrollController.position.maxScrollExtent,
@@ -215,8 +188,6 @@ class _ChatScreenState extends State<ChatScreen> {
           //sender = senderTemp;
         });
       }
-    } catch (e) {
-      // Handle the error here
-    }
+    } catch (e) {}
   }
 }

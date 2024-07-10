@@ -1,5 +1,7 @@
+import 'dart:convert';
+
 class MessageModel {
-  int? userId;
+  String? userId;
   String? userName;
   String? messageText;
   String? createDate;
@@ -12,18 +14,23 @@ class MessageModel {
   });
 
   MessageModel.fromJson(Map<String, dynamic> json) {
-    userId = json["userId"]?.toInt();
+    userId = json["userId"]?.toString();
     userName = json["userName"]?.toString();
     messageText = json["messageText"]?.toString();
     createDate = json["createDate"]?.toString();
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data["userId"] = userId;
-    data["userName"] = userName;
-    data["messageText"] = messageText;
-    data["createDate"] = createDate;
-    return data;
+    return {
+      'userId': userId,
+      'userName': userName,
+      'messageText': messageText,
+      'createDate': createDate,
+    };
+  }
+
+  @override
+  String toString() {
+    return json.encode(toJson());
   }
 }

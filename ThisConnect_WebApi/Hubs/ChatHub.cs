@@ -6,6 +6,12 @@ namespace ThisConnect_WebApi.Hubs
 {
     public class ChatHub:Hub
     {
+        private readonly DbThisconnectContext _context;
+
+        public ChatHub(DbThisconnectContext context)
+        {
+            _context = context;
+        }
         public async Task JoinRoom(string chatRoomId)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, chatRoomId);
@@ -16,78 +22,26 @@ namespace ThisConnect_WebApi.Hubs
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, chatRoomId);
         }
 
-        public async Task SendMessage(string chatRoomId, string userName, int randomUserId, string message)
+        public async Task SendMessage(TempMessage tempmessage)
         {
-            var messageModel = new MessageModel
-            {
-                CreateDate = DateTime.Now,
-                MessageText = message,
-                UserId = randomUserId,
-                UserName = userName
-            };
-            await Clients.Group(chatRoomId).SendAsync("ReceiveMessage", messageModel);
+            await Clients.Group(tempmessage.ChatRoomId).SendAsync("ReceiveMessage", tempmessage);
+            TblMessage message = new TblMessage();
+            message.ChatRoomId = tempmessage.ChatRoomId;
+            message.SenderUserId = tempmessage.SenderUserId;
+            message.RecieverUserId = tempmessage.RecieverUserId;
+            message.AttachmentId = tempmessage.AttachmentId;
+            message.Content = tempmessage.Content;
+            message.CreatedAt = DateTime.Now.ToString();
+            message.ReadedAt = null;
+
+            _context.TblMessages.AddAsync(message);
+            _context.SaveChanges();
+
         }
 
 
 
 
-
-        /*
-		public async Task SendMessage(string UserName, int RandomUserId, string Message)
-		{
-			//deneme();
-			MessageModel MessageModel = new MessageModel
-			{
-				CreateDate = DateTime.Now,
-				MessageText = Message,
-				UserId = RandomUserId,
-				UserName = UserName
-			};
-			await Clients.All.SendAsync("ReceiveMessage", MessageModel);			
-		}
-
-		public async Task JoinUSer(string userName, int userId)
-		{
-			MessageModel MessageModel = new MessageModel
-			{
-				CreateDate = DateTime.Now,
-				MessageText = userName + " joined chat",
-				UserId = 0,
-				UserName = "system"
-			};
-			await Clients.All.SendAsync("ReceiveMessage", MessageModel);
-		}
-
-		public async Task deneme()
-		{
-			try
-			{
-				using (var db = new DbThisconnectContext())
-				{
-					var newItem = new TblUser();
-					newItem.Phone = "1234567890";
-					newItem.Email = "testemail@gmail.com";
-					newItem.Title = "Prof";
-					newItem.Name = "Metin";
-					newItem.Surname = "Öztay";
-					newItem.CreatedAt = DateTime.Now.ToString();
-					newItem.LastSeenAt = DateTime.Now.ToString();
-					db.TblUsers.Add(newItem);
-					var count = await db.SaveChangesAsync().ConfigureAwait(false);
-					Console.WriteLine("Kaydedilen öğe sayısı: {0}", count);
-
-					foreach (var item in db.TblUsers)
-					{
-						Console.WriteLine("{0}", item.Name);
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine("Bir hata oluştu: {0}", ex.Message);
-			}
-		}
-		
-		*/
+       
     }
 }
