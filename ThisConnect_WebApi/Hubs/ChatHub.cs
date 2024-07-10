@@ -12,10 +12,13 @@ namespace ThisConnect_WebApi.Hubs
         {
             _context = context;
         }
-        public async Task JoinRoom(string chatRoomId)
+        public async Task JoinRoom(string chatRoomId, string? lastmessageId)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, chatRoomId);
+
+            
         }
+
 
         public async Task LeaveRoom(string chatRoomId)
         {
@@ -25,23 +28,26 @@ namespace ThisConnect_WebApi.Hubs
         public async Task SendMessage(TempMessage tempmessage)
         {
             await Clients.Group(tempmessage.ChatRoomId).SendAsync("ReceiveMessage", tempmessage);
+
             TblMessage message = new TblMessage();
             message.ChatRoomId = tempmessage.ChatRoomId;
             message.SenderUserId = tempmessage.SenderUserId;
             message.RecieverUserId = tempmessage.RecieverUserId;
-            message.AttachmentId = tempmessage.AttachmentId;
+            message.AttachmentId = null;
             message.Content = tempmessage.Content;
-            message.CreatedAt = DateTime.Now.ToString();
+            message.CreatedAt = DateTime.Now.ToString(); 
             message.ReadedAt = null;
 
-            _context.TblMessages.AddAsync(message);
-            _context.SaveChanges();
-
+            try
+            {
+                await _context.TblMessages.AddAsync(message);
+                await _context.SaveChangesAsync(); 
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Veritabanı mesaj ekleme işlemi sırasında hata oluştu: {ex.Message}");
+                throw; 
+            }
         }
-
-
-
-
-       
     }
 }

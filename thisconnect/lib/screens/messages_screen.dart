@@ -40,8 +40,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
               future: userFuture,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  final User user = snapshot.data!;
-                  final name = "${user.name} ${user.surname}";
+                  final User tempUser = snapshot.data!;
+                  final name = "${tempUser.name} ${tempUser.surname}";
                   return GestureDetector(
                     onTap: () {
                       Navigator.push<void>(
@@ -49,7 +49,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                         MaterialPageRoute<void>(
                           builder: (BuildContext context) => ChatScreen(
                             name,
-                            user,
+                            widget.user,
                             chatRooms[index],
                           ),
                         ),
@@ -60,7 +60,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                         children: [
                           Expanded(
                             child: Text(
-                              user.title,
+                              tempUser.title,
                               textAlign: TextAlign.left,
                               style: const TextStyle(
                                 fontSize: 13,
@@ -82,7 +82,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       ),
                       leading: ClipRRect(
                         borderRadius: BorderRadius.circular(100),
-                        child: Image.network(user.avatarUrl!),
+                        child: Image.network(tempUser.avatarUrl!),
                       ),
                       subtitle: Text(
                         name,
@@ -100,13 +100,6 @@ class _MessagesScreenState extends State<MessagesScreen> {
       ),
     );
   }
-/*
-  Future<void> readUsers() async {
-    final results = await UserApi.getUsers();
-    setState(() {
-      users = results;
-    });
-  }*/
 
   Future<void> getChatRoomsByParticipant(String userId) async {
     final results = await ApiHandler.getChatRoomsByParticipant(userId);

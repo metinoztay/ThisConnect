@@ -4,8 +4,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:thisconnect/models/chatroom_model.dart';
-import 'package:thisconnect/models/messageModel.dart';
-import 'package:thisconnect/models/message_model.dart';
+import 'package:thisconnect/models/message_model.dart'; // Assuming Message model is imported correctly
 import 'package:thisconnect/models/user_model.dart';
 import 'package:thisconnect/services/api_handler.dart';
 import 'package:thisconnect/utils/removeMessageExtraChar.dart';
@@ -17,7 +16,10 @@ class ChatScreen extends StatefulWidget {
   final ChatRoom chatRoom;
   final User user;
   final String userName;
-  const ChatScreen(this.userName, this.user, this.chatRoom, {super.key});
+
+  const ChatScreen(this.userName, this.user, this.chatRoom, {Key? key})
+      : super(key: key);
+
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
@@ -28,13 +30,15 @@ class _ChatScreenState extends State<ChatScreen> {
   TextEditingController messageTextController = TextEditingController();
 
   bool isMessageEmpty = true;
+  List<Message> messages = [];
 
   @override
   void initState() {
     super.initState();
-    getUserInformations();
+    getUserInformation();
     openSignalRConnection();
     messageTextController.addListener(_handleMessageChanged);
+    getOldMessages();
   }
 
   @override
@@ -59,24 +63,25 @@ class _ChatScreenState extends State<ChatScreen> {
     var messageText = removeMessageExtraChar(messageTextController.text);
 
     var message = {
-      'MessageId': null,
+      'MessageId': '',
       'ChatRoomId': widget.chatRoom.chatRoomId,
       'SenderUserId': widget.user.userId,
       'RecieverUserId': reciever!.userId,
-      'AttachmentId': null,
+      'AttachmentId': '',
       'Content': messageText,
-      'CreatedAt': DateTime.now().toIso8601String(),
-      'ReadedAt': null,
+      'CreatedAt': "",
+      'ReadedAt': '',
     };
 
     await connection.invoke('SendMessage', args: [message]);
-    messageTextController.text = "";
+    messageTextController.text = '';
 
     Future.delayed(const Duration(milliseconds: 50), () {
       chatListScrollController.animateTo(
-          chatListScrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.ease);
+        chatListScrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.ease,
+      );
     });
   }
 
@@ -96,25 +101,24 @@ class _ChatScreenState extends State<ChatScreen> {
         title: Row(
           children: [
             ClipOval(
-                child: Image.network(
-              reciever!.avatarUrl!,
-              width: 50.0,
-              height: 50.0,
-              fit: BoxFit.cover,
-            )),
-            const SizedBox(
-              width: 10,
+              child: Image.network(
+                reciever!.avatarUrl!,
+                width: 50.0,
+                height: 50.0,
+                fit: BoxFit.cover,
+              ),
             ),
+            const SizedBox(width: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "${reciever!.title}",
+                  '${reciever!.title}',
                   style: const TextStyle(
                       color: Colors.white, fontSize: 15, letterSpacing: 1),
                 ),
                 Text(
-                  "${reciever!.name} ${reciever!.surname}",
+                  '${reciever!.name} ${reciever!.surname}',
                   style: const TextStyle(
                       color: Colors.white, fontSize: 18, letterSpacing: 1),
                 )
@@ -140,24 +144,49 @@ class _ChatScreenState extends State<ChatScreen> {
 
   final connection = HubConnectionBuilder()
       .withUrl(
-          'https://10.0.2.2:7049/chathub',
-          HttpConnectionOptions(
-            logging: (level, message) => print(message),
-            transport: HttpTransportType.webSockets,
-            skipNegotiation: true,
-          ))
+        'https://10.0.2.2:7049/chathub',
+        HttpConnectionOptions(
+          logging: (level, message) => print(message),
+          transport: HttpTransportType.webSockets,
+          skipNegotiation: true,
+        ),
+      )
       .build();
 
   Future<void> openSignalRConnection() async {
     await connection.start();
     connection.on('ReceiveMessage', (message) {
-      _handleIncommingDriverLocation(message);
+      _handleIncomingMessage(message);
     });
-    await connection.invoke('JoinRoom', args: [widget.chatRoom.chatRoomId]);
+    await connection
+        .invoke('JoinRoom', args: [widget.chatRoom.chatRoomId, null]);
   }
 
-  List<Message> messages = [];
-  Future<void> _handleIncommingDriverLocation(List<dynamic>? args) async {
+  Future<void> getOldMessages() async {
+    try {
+      final List<Message>? results = await ApiHandler.getMessagesByChatRoomId(
+        widget.chatRoom.chatRoomId,
+      );
+      if (results != null) {
+        if (mounted) {
+          setState(() {
+            messages.addAll(results);
+            Future.delayed(const Duration(milliseconds: 50), () {
+              chatListScrollController.animateTo(
+                chatListScrollController.position.maxScrollExtent,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.ease,
+              );
+            });
+          });
+        }
+      }
+    } catch (e) {
+      // Handle error
+    }
+  }
+
+  Future<void> _handleIncomingMessage(List<dynamic>? args) async {
     if (args != null) {
       var jsonResponse = json.decode(json.encode(args[0]));
       Message data = Message.fromJson(jsonResponse);
@@ -166,28 +195,30 @@ class _ChatScreenState extends State<ChatScreen> {
           messages.add(data);
           Future.delayed(const Duration(milliseconds: 50), () {
             chatListScrollController.animateTo(
-                chatListScrollController.position.maxScrollExtent,
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.ease);
+              chatListScrollController.position.maxScrollExtent,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.ease,
+            );
           });
         });
       }
     }
   }
 
-  Future<void> getUserInformations() async {
+  Future<void> getUserInformation() async {
     try {
-      final recieverTemp = await ApiHandler.getUserInformation(
-          widget.chatRoom.participant1Id == widget.user.userId
-              ? widget.chatRoom.participant1Id
-              : widget.chatRoom.participant2Id);
-      //final senderTemp = await ApiHandler.getUserInformation(widget.senderId);
+      final receiverTemp = await ApiHandler.getUserInformation(
+        widget.user.userId == widget.chatRoom.participant1Id
+            ? widget.chatRoom.participant2Id
+            : widget.chatRoom.participant1Id,
+      );
       if (mounted) {
         setState(() {
-          reciever = recieverTemp;
-          //sender = senderTemp;
+          reciever = receiverTemp;
         });
       }
-    } catch (e) {}
+    } catch (e) {
+      // Handle error
+    }
   }
 }

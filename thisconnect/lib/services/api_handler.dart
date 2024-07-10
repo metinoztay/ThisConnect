@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:thisconnect/models/chatroom_model.dart';
+import 'package:thisconnect/models/message_model.dart';
 import 'package:thisconnect/models/otp_model.dart';
 import 'package:thisconnect/models/qr_model.dart';
 import 'package:http/http.dart' as http;
@@ -360,5 +361,30 @@ class ApiHandler {
       print('Error retrieving chat rooms: $e');
       return [];
     }
+  }
+
+  static Future<List<Message>?> getMessagesByChatRoomId(
+      String chatRoomId) async {
+    String? lastMessageId = null;
+    String url = "https://10.0.2.2:7049/api/Messages?chatRoomId=$chatRoomId";
+    Uri uri = Uri.parse(url);
+    final response = await http.get(uri);
+    final body = response.body;
+    final json = jsonDecode(body);
+    final results = json['\$values'] as List<dynamic>;
+
+    final messages = await Future.wait(results.map((e) async {
+      return Message(
+        messageId: e["messageId"],
+        senderUserId: e["senderUserId"],
+        recieverUserId: e["recieverUserId"],
+        chatRoomId: e["chatRoomId"],
+        attachmentId: e["attachmentId"],
+        content: e["content"],
+        createdAt: e["createdAt"],
+        readedAt: e["readedAt"],
+      );
+    }));
+    return messages;
   }
 }

@@ -3,16 +3,20 @@
   "WorkspaceRootPath": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\models\\tempmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:models\\tempmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\controllers\\messagescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:controllers\\messagescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\models\\tblmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:models\\tblmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\models\\tempmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:models\\tempmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -30,39 +34,52 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
+              "Title": "MessagesController.cs",
+              "DocumentMoniker": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Controllers\\MessagesController.cs",
+              "RelativeDocumentMoniker": "Controllers\\MessagesController.cs",
+              "ToolTip": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Controllers\\MessagesController.cs",
+              "RelativeToolTip": "Controllers\\MessagesController.cs",
+              "ViewState": "AQIAAA0AAAAAAAAAAAA9wBQAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-10T20:37:31.082Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "TempMessage.cs",
               "DocumentMoniker": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Models\\TempMessage.cs",
               "RelativeDocumentMoniker": "Models\\TempMessage.cs",
               "ToolTip": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Models\\TempMessage.cs",
               "RelativeToolTip": "Models\\TempMessage.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-10T18:43:54.671Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "TblMessage.cs",
               "DocumentMoniker": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Models\\TblMessage.cs",
               "RelativeDocumentMoniker": "Models\\TblMessage.cs",
               "ToolTip": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Models\\TblMessage.cs",
               "RelativeToolTip": "Models\\TblMessage.cs",
-              "ViewState": "AQIAAAsAAAAAAAAAAAA3wBUAAAApAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAuwAcAAAAyAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-10T18:42:32.167Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "ChatHub.cs",
               "DocumentMoniker": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Hubs\\ChatHub.cs",
               "RelativeDocumentMoniker": "Hubs\\ChatHub.cs",
               "ToolTip": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Hubs\\ChatHub.cs",
               "RelativeToolTip": "Hubs\\ChatHub.cs",
-              "ViewState": "AQIAABAAAAAAAAAAAAAuwCQAAAAzAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAuwAYAAAAcAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-10T11:46:16.209Z",
               "EditorCaption": ""
