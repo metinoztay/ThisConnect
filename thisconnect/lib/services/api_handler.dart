@@ -137,6 +137,12 @@ class ApiHandler {
         lastSeenAt: json["lastSeenAt"]);
   }
 
+  static Future<void> createOtpRequest(String phone) async {
+    String url = "https://10.0.2.2:7049/api/OTP/createotp?phone=$phone";
+    Uri uri = Uri.parse(url);
+    final response = await http.post(uri);
+  }
+
   static Future<User?> otpVerification(Otp otp) async {
     String url = "https://10.0.2.2:7049/api/otp/otpverification";
     Uri uri = Uri.parse(url);

@@ -1,5 +1,6 @@
 import 'package:thisconnect/models/profileitem.dart';
 import 'package:flutter/material.dart';
+import 'package:thisconnect/services/pref_handler.dart';
 
 class ProfileMenuScreen extends StatefulWidget {
   const ProfileMenuScreen({super.key});
@@ -29,10 +30,39 @@ class _ProfileMenuScreenState extends State<ProfileMenuScreen> {
             return Column(
               children: [
                 GestureDetector(
-                  onTap: () => Navigator.pushNamed(
-                      context,
-                      itemMaps[
-                          index]), // logout olduğunda push replacement yapılacak
+                  onTap: () async {
+                    if (item.title == 'Logout') {
+                      var result = await showDialog<bool>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Logout'),
+                              content: const Text(
+                                  'Are you sure you want to logout?'),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: const Text('No'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(false);
+                                  },
+                                ),
+                                TextButton(
+                                  child: const Text('Yes'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(true);
+                                  },
+                                ),
+                              ],
+                            );
+                          });
+                      if (result ?? false) {
+                        await PrefHandler.removePrefUserInformation();
+                        Navigator.pushReplacementNamed(context, '/login');
+                      }
+                    } else {
+                      Navigator.of(context).pushNamed(itemMaps[index]);
+                    }
+                  },
                   child: ListTile(
                     title: Row(
                       children: [

@@ -99,14 +99,14 @@ class _OTPScreenState extends State<OTPScreen> {
                         SignUpScreen(phoneNumber: widget.phoneNumber),
                   ));
                 }
-                showDialog(
+                /*showDialog(
                     context: context,
                     builder: (context) {
                       return AlertDialog(
                         title: const Text("Verification Code"),
                         content: Text('Code entered is $verificationCode'),
                       );
-                    });
+                    });*/
               },
             ),
             const SizedBox(

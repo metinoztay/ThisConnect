@@ -39,5 +39,43 @@ namespace ThisConnect_WebApi.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        [HttpPost("createotp")]
+        public async Task<IActionResult> CreateOTP(String phone)
+        {
+            try
+            {
+                TblOtp? Otp = _context.TblOtps.FirstOrDefault(o => o.Phone == phone);
+
+               
+
+                if (Otp == null)
+                {
+                    Otp = new TblOtp();
+                    Otp.Phone = phone;
+                    Otp.OtpValue = phone.Substring(0, 6);
+                    Otp.ExpirationTime = DateTime.Now.AddMinutes(5).ToString();
+                    await _context.TblOtps.AddAsync(Otp);
+                }
+                else {
+                    Otp.Phone = phone;
+                    Otp.OtpValue = phone.Substring(0, 6);
+                    Otp.ExpirationTime = DateTime.Now.AddMinutes(5).ToString();
+                    _context.TblOtps.Update(Otp);
+                }
+
+                await _context.SaveChangesAsync();           
+                
+
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+
+            return NoContent();
+        }
+
     }
 }

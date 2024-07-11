@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thisconnect/screens/otp_screen.dart';
+import 'package:thisconnect/services/api_handler.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -88,7 +89,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 10,
                 ),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    await ApiHandler.createOtpRequest(phoneController.text);
                     Navigator.push(
                         context,
                         MaterialPageRoute(

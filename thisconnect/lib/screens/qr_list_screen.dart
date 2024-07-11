@@ -164,6 +164,7 @@ class _QRListScreenState extends State<QRListScreen> {
   }
 
   Future<void> loadQRList() async {
+    _qrList.clear();
     if (user != null) {
       final results = await ApiHandler.getUsersQRList(user!.userId);
       setState(() {
