@@ -95,7 +95,8 @@ class _OTPScreenState extends State<OTPScreen> {
                 } else {
                   // otp mi yanlış kullanıcı mı yok kontrolü yapılacak
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (_) => const SignUpScreen(),
+                    builder: (_) =>
+                        SignUpScreen(phoneNumber: widget.phoneNumber),
                   ));
                 }
                 showDialog(

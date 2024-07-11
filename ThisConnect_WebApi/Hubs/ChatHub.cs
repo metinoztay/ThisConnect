@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore.Diagnostics.Internal;
 using ThisConnect_WebApi.Models;
 using static NpgsqlTypes.NpgsqlTsVector;
 
@@ -42,6 +43,12 @@ namespace ThisConnect_WebApi.Hubs
             {
                 await _context.TblMessages.AddAsync(message);
                 await _context.SaveChangesAsync(); 
+                TblChatRoom? chatRoom = new TblChatRoom();
+                chatRoom = _context.TblChatRooms.FirstOrDefault(c => c.ChatRoomId == message.ChatRoomId);
+                chatRoom.LastMessageId = message.MessageId;
+                _context.TblChatRooms.Update(chatRoom);
+                _context.SaveChanges();
+
             }
             catch (Exception ex)
             {

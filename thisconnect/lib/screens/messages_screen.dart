@@ -1,4 +1,5 @@
 import 'package:thisconnect/models/chatroom_model.dart';
+import 'package:thisconnect/models/message_model.dart';
 import 'package:thisconnect/models/user_model.dart';
 import 'package:thisconnect/screens/chat_screen.dart';
 import 'package:thisconnect/services/api_handler.dart';
@@ -15,7 +16,6 @@ class MessagesScreen extends StatefulWidget {
 
 class _MessagesScreenState extends State<MessagesScreen> {
   List<ChatRoom> chatRooms = [];
-
   @override
   void initState() {
     super.initState();
@@ -60,22 +60,15 @@ class _MessagesScreenState extends State<MessagesScreen> {
                         children: [
                           Expanded(
                             child: Text(
-                              tempUser.title,
+                              tempUser.title +
+                                  " " +
+                                  tempUser.name +
+                                  " " +
+                                  tempUser.surname,
                               textAlign: TextAlign.left,
                               style: const TextStyle(
-                                fontSize: 13,
+                                fontSize: 18,
                               ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Text(
-                              chatRooms[index].lastMessageId ?? "Null",
-                              style: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.right,
                             ),
                           ),
                         ],
@@ -84,9 +77,28 @@ class _MessagesScreenState extends State<MessagesScreen> {
                         borderRadius: BorderRadius.circular(100),
                         child: Image.network(tempUser.avatarUrl!),
                       ),
-                      subtitle: Text(
-                        name,
-                        style: const TextStyle(color: Colors.black),
+                      subtitle: Expanded(
+                        child: FutureBuilder<Message>(
+                          future: getLastMessage(
+                            chatRooms[index].lastMessageId != null
+                                ? chatRooms[index].lastMessageId!
+                                : '',
+                          ),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Text(
+                                snapshot.data!.content!,
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.left,
+                              );
+                            }
+                            return const Text(' ');
+                          },
+                        ),
                       ),
                     ),
                   );
@@ -113,20 +125,9 @@ class _MessagesScreenState extends State<MessagesScreen> {
     final result = await ApiHandler.getUserInformation(userId);
     return result;
   }
-/*
-  Future<void> getPrefUserInformation() async {
-    var temp = await PrefHandler.getPrefUserInformation();
-    if (temp != null) {
-      user = User(
-        userId: temp.userId,
-        phone: temp.phone,
-        email: temp.email,
-        title: temp.title,
-        name: temp.name,
-        surname: temp.surname,
-        createdAt: temp.createdAt,
-        lastSeenAt: temp.lastSeenAt,
-      );
-    }
-  }*/
+
+  Future<Message> getLastMessage(String messageId) async {
+    final result = await ApiHandler.getMessageByMessageId(messageId);
+    return result;
+  }
 }

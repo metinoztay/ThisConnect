@@ -16,7 +16,8 @@ namespace ThisConnect_WebApi.Controllers
             _context = context;
         }
 
-        [HttpGet]
+        //[HttpGet]
+        [HttpGet("bychatroomid")]
         public async Task<ActionResult<IEnumerable<TblMessage>>> GetMessages(string chatRoomId, string? lastmessageId)
         {
             List<TempMessage> messages = new List<TempMessage>();
@@ -55,6 +56,39 @@ namespace ThisConnect_WebApi.Controllers
 
             return Ok(messages);
         }
+
+        [HttpGet("bymessageid")]
+        public async Task<ActionResult<IEnumerable<TblMessage>>> GetMessage(string messageId)
+        {
+            TblMessage? message = new TblMessage();
+
+            if (string.IsNullOrEmpty(messageId))
+            {
+               
+            }
+            else
+            {
+                message = _context.TblMessages
+                   .FirstOrDefault(m => m.MessageId == messageId);
+            }
+
+           
+                TempMessage tempMessage = new TempMessage();
+                tempMessage.ChatRoomId = message.ChatRoomId;
+                tempMessage.SenderUserId = message.SenderUserId;
+                tempMessage.RecieverUserId = message.RecieverUserId;
+                tempMessage.AttachmentId = message.AttachmentId;
+                tempMessage.Content = message.Content;
+                tempMessage.CreatedAt = message.CreatedAt;
+                tempMessage.ReadedAt = message.ReadedAt;
+                tempMessage.MessageId = message.MessageId;
+
+            
+
+            return Ok(tempMessage);
+        }
+
+
 
     }
 }

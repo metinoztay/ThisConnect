@@ -10,7 +10,8 @@ import 'package:thisconnect/services/api_handler.dart';
 import 'package:thisconnect/services/pref_handler.dart';
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+  final String phoneNumber;
+  const SignUpScreen({super.key, required this.phoneNumber});
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -22,6 +23,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   String dropdownValue = 'One';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    phoneController.value = TextEditingValue(text: widget.phoneNumber);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,23 +127,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             Text('Title', style: TextStyle(color: Colors.grey)),
                       ),
                       DropdownMenuItem<String>(
-                          value: 'professor',
+                          value: 'Prof.',
                           child: Text(
                             'Professor',
                           )),
                       DropdownMenuItem<String>(
-                          value: 'associateprofessor',
+                          value: 'Assoc. Prof.',
                           child: Text('Associate Professor')),
                       DropdownMenuItem<String>(
-                          value: 'assistantprofessor',
+                          value: 'Asst. Prof.',
                           child: Text('Assistant Professor')),
                       DropdownMenuItem<String>(
-                          value: 'researchassistant',
+                          value: 'Rsch. Asst.',
                           child: Text('Research Assistant')),
                       DropdownMenuItem<String>(
-                          value: 'student', child: Text('Student')),
+                          value: 'Student', child: Text('Student')),
                       DropdownMenuItem<String>(
-                          value: 'other', child: Text('Other')),
+                          value: 'Other', child: Text('Other')),
                     ]),
                 const SizedBox(
                   height: 10,
@@ -159,6 +167,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 TextField(
                   controller: phoneController,
+                  enabled: false,
                   style: const TextStyle(
                       color: Colors.black, fontWeight: FontWeight.w500),
                   decoration: const InputDecoration(
@@ -175,8 +184,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: 10,
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    createUser();
+                  onPressed: () async {
+                    await createUser();
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -214,7 +223,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Future<void> createUser() async {
-    //text fieldlar kontrol edilecek
     User user = User(
       userId: "",
       name: nameController.text,
@@ -226,6 +234,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       updatedAt: "",
       lastSeenAt: "",
     );
+
     await ApiHandler.createUser(user);
   }
 }

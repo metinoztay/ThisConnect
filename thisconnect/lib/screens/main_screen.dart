@@ -15,7 +15,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int selectedPage = 0;
-  User? user; // 'late' yerine '?' kullanarak nullable yapıyoruz
+  User? user;
   late List<Widget> pageOptions;
   final appBarTitles = [
     "Messages",
@@ -31,7 +31,6 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // 'user' yüklenene kadar boş bir widget göstermek için kontrol ekliyoruz
     if (user == null) {
       return Scaffold(
         appBar: AppBar(
@@ -42,12 +41,10 @@ class _MainScreenState extends State<MainScreen> {
           elevation: 210,
           centerTitle: true,
         ),
-        body:
-            Center(child: CircularProgressIndicator()), // Yükleniyor göstergesi
+        body: Center(child: CircularProgressIndicator()),
       );
     }
 
-    // 'user' yüklendikten sonra 'pageOptions' listesini başlatıyoruz
     pageOptions = [
       MessagesScreen(user: user!),
       QRScannerScreen(user: user!),

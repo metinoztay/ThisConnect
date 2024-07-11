@@ -15,7 +15,7 @@ class QRListScreen extends StatefulWidget {
 class _QRListScreenState extends State<QRListScreen> {
   List<QR> _qrList = [];
   String newQRtitle = '';
-  User? user; // 'late' yerine nullable olarak değiştirildi
+  User? user;
   @override
   void initState() {
     super.initState();
@@ -159,7 +159,7 @@ class _QRListScreenState extends State<QRListScreen> {
           lastSeenAt: temp.lastSeenAt,
         );
       });
-      loadQRList(); // Kullanıcı bilgileri yüklendikten sonra QR listesini yükleyin
+      loadQRList();
     }
   }
 

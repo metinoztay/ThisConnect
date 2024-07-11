@@ -314,6 +314,7 @@ class ApiHandler {
           createdAt: json['createdAt'],
           lastSeenAt: json['lastSeenAt'],
         );
+
         await PrefHandler.savePrefUserInformation(result);
       } else if (response.statusCode == 404) {
         print('No chat room found for these participants.');
@@ -366,7 +367,8 @@ class ApiHandler {
   static Future<List<Message>?> getMessagesByChatRoomId(
       String chatRoomId) async {
     String? lastMessageId = null;
-    String url = "https://10.0.2.2:7049/api/Messages?chatRoomId=$chatRoomId";
+    String url =
+        "https://10.0.2.2:7049/api/Messages/bychatroomid?chatRoomId=$chatRoomId";
     Uri uri = Uri.parse(url);
     final response = await http.get(uri);
     final body = response.body;
@@ -386,5 +388,26 @@ class ApiHandler {
       );
     }));
     return messages;
+  }
+
+  static Future<Message> getMessageByMessageId(String messageId) async {
+    String? lastMessageId = null;
+    String url =
+        "https://10.0.2.2:7049/api/Messages/bymessageid?messageId=$messageId";
+    Uri uri = Uri.parse(url);
+    final response = await http.get(uri);
+    final body = response.body;
+    final json = jsonDecode(body);
+
+    return Message(
+      messageId: json["messageId"],
+      senderUserId: json["senderUserId"],
+      recieverUserId: json["recieverUserId"],
+      chatRoomId: json["chatRoomId"],
+      attachmentId: json["attachmentId"],
+      content: json["content"],
+      createdAt: json["createdAt"],
+      readedAt: json["readedAt"],
+    );
   }
 }
