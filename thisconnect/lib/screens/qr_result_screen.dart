@@ -4,6 +4,7 @@ import 'package:thisconnect/models/qr_model.dart';
 import 'package:thisconnect/models/user_model.dart';
 import 'package:thisconnect/screens/chat_screen.dart';
 import 'package:thisconnect/services/api_handler.dart';
+import 'package:thisconnect/services/pref_handler.dart';
 
 class QRResultScreen extends StatefulWidget {
   final String qrCodeId;
@@ -22,9 +23,7 @@ class QRResultScreen extends StatefulWidget {
 
 class _QRResultScreenState extends State<QRResultScreen> {
   late QR _qrInformation;
-  late ChatRoom chatRoom;
-
-  String fullName = "";
+  ChatRoom? chatRoom;
   bool isLoading = true;
 
   @override
@@ -201,15 +200,14 @@ class _QRResultScreenState extends State<QRResultScreen> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
                       ),
-                      onPressed: () {
-                        createChatRoom();
+                      onPressed: () async {
+                        await createChatRoom();
                         Navigator.push<void>(
                           context,
                           MaterialPageRoute<void>(
                             builder: (BuildContext context) => ChatScreen(
-                              "QR Result Screen",
                               widget.user,
-                              chatRoom,
+                              chatRoom!,
                             ),
                           ),
                         );
@@ -250,13 +248,14 @@ class _QRResultScreenState extends State<QRResultScreen> {
     try {
       final result = await ApiHandler.createChatRoom(
         ChatRoom(
-          participant1Id: widget.user.userId,
-          participant2Id: _qrInformation.user.userId,
+          participant1Id: _qrInformation.userId,
+          participant2Id: widget.user.userId,
           chatRoomId: '',
           lastMessageId: '',
           createdAt: '',
         ),
       );
+      await findChatRoom();
       return result;
     } catch (e) {
       // Handle error here

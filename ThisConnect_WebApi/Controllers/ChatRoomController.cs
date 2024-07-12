@@ -62,7 +62,16 @@ namespace ThisConnect_WebApi.Controllers
         {
             var chatRooms = await _context.TblChatRooms
                 .Where(cr => cr.Participant1Id == participantId || cr.Participant2Id == participantId)
-                .ToListAsync();
+                    .Join(
+                        _context.TblMessages,
+                        chatRoom => chatRoom.LastMessageId,  
+                        message => message.MessageId,               
+                        (chatRoom, message) => new { ChatRoom = chatRoom, MessageCreatedAt = message.CreatedAt }
+                        )
+                        .OrderByDescending(chatRoomWithMessage => chatRoomWithMessage.MessageCreatedAt)  
+                        .Select(chatRoomWithMessage => chatRoomWithMessage.ChatRoom)
+                        .ToListAsync();
+
 
             if (chatRooms == null || chatRooms.Count == 0)
             {

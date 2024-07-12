@@ -41,14 +41,12 @@ class _MessagesScreenState extends State<MessagesScreen> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final User tempUser = snapshot.data!;
-                  final name = "${tempUser.name} ${tempUser.surname}";
                   return GestureDetector(
                     onTap: () {
                       Navigator.push<void>(
                         context,
                         MaterialPageRoute<void>(
                           builder: (BuildContext context) => ChatScreen(
-                            name,
                             widget.user,
                             chatRooms[index],
                           ),
@@ -87,7 +85,10 @@ class _MessagesScreenState extends State<MessagesScreen> {
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               return Text(
-                                snapshot.data!.content!,
+                                snapshot.data!.content.length > 20
+                                    ? snapshot.data!.content.substring(0, 20) +
+                                        '...'
+                                    : snapshot.data!.content,
                                 style: const TextStyle(
                                   color: Colors.grey,
                                   fontSize: 16,
@@ -117,6 +118,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
     final results = await ApiHandler.getChatRoomsByParticipant(userId);
 
     setState(() {
+      chatRooms.clear();
       chatRooms = results;
     });
   }

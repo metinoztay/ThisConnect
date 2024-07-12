@@ -3,24 +3,28 @@
   "WorkspaceRootPath": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\controllers\\otpcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:controllers\\otpcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\controllers\\qrcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:controllers\\qrcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\controllers\\chatroomcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:controllers\\chatroomcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\controllers\\messagescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:controllers\\messagescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\controllers\\otpcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:controllers\\otpcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|c:\\projects\\thisconnect\\thisconnect_webapi\\controllers\\qrcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{719A95B2-CFB1-426F-9AAA-00CE48E14D81}|ThisConnect_WebApi.csproj|solutionrelative:controllers\\qrcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,7 +34,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -38,33 +42,43 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
+              "Title": "ChatRoomController.cs",
+              "DocumentMoniker": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Controllers\\ChatRoomController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ChatRoomController.cs",
+              "ToolTip": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Controllers\\ChatRoomController.cs",
+              "RelativeToolTip": "Controllers\\ChatRoomController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAADkAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-12T09:10:51.408Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "OTPController.cs",
               "DocumentMoniker": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Controllers\\OTPController.cs",
               "RelativeDocumentMoniker": "Controllers\\OTPController.cs",
               "ToolTip": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Controllers\\OTPController.cs",
               "RelativeToolTip": "Controllers\\OTPController.cs",
-              "ViewState": "AQIAACMAAAAAAAAAAAAtwDAAAAAAAAAA",
+              "ViewState": "AQIAAB0AAAAAAAAAAAAtwDAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-11T20:14:39.389Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-11T20:14:39.389Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "UserController.cs",
               "DocumentMoniker": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Controllers\\UserController.cs",
               "RelativeDocumentMoniker": "Controllers\\UserController.cs",
               "ToolTip": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Controllers\\UserController.cs",
               "RelativeToolTip": "Controllers\\UserController.cs",
-              "ViewState": "AQIAAC4AAAAAAAAAAAAkwCkAAAAYAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACkAAAAYAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-11T17:44:42.571Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-11T17:44:42.571Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "QRController.cs",
               "DocumentMoniker": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Controllers\\QRController.cs",
               "RelativeDocumentMoniker": "Controllers\\QRController.cs",
@@ -72,32 +86,32 @@
               "RelativeToolTip": "Controllers\\QRController.cs",
               "ViewState": "AQIAACsAAAAAAAAAAAAkwBkAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-10T21:25:48.266Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-10T21:25:48.266Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "MessagesController.cs",
               "DocumentMoniker": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Controllers\\MessagesController.cs",
               "RelativeDocumentMoniker": "Controllers\\MessagesController.cs",
               "ToolTip": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Controllers\\MessagesController.cs",
               "RelativeToolTip": "Controllers\\MessagesController.cs",
-              "ViewState": "AQIAAAkAAAAAAAAAAAAAAF4AAAAAAAAA",
+              "ViewState": "AQIAAA0AAAAAAAAAAAAzwF4AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-10T20:37:31.082Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "ChatHub.cs",
               "DocumentMoniker": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Hubs\\ChatHub.cs",
               "RelativeDocumentMoniker": "Hubs\\ChatHub.cs",
               "ToolTip": "C:\\Projects\\ThisConnect\\ThisConnect_WebApi\\Hubs\\ChatHub.cs",
               "RelativeToolTip": "Hubs\\ChatHub.cs",
-              "ViewState": "AQIAACUAAAAAAAAAAAAkwCgAAAAAAAAA",
+              "ViewState": "AQIAACAAAAAAAAAAAAAgwCIAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-10T11:46:16.209Z"
+              "WhenOpened": "2024-07-10T11:46:16.209Z",
+              "EditorCaption": ""
             }
           ]
         }

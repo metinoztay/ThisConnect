@@ -15,15 +15,20 @@ namespace ThisConnect_WebApi.Hubs
         }
         public async Task JoinRoom(string chatRoomId, string? lastmessageId)
         {
-            await Groups.AddToGroupAsync(Context.ConnectionId, chatRoomId);
-
-            
+            await Groups.AddToGroupAsync(Context.ConnectionId, chatRoomId);            
         }
 
 
         public async Task LeaveRoom(string chatRoomId)
         {
+            
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, chatRoomId);
+            TblChatRoom? tblChatRoom = _context.TblChatRooms.FirstOrDefault(c => c.ChatRoomId == chatRoomId);
+            if (tblChatRoom != null && tblChatRoom.LastMessageId == null)
+            {
+                _context.TblChatRooms.Remove(tblChatRoom);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task SendMessage(TempMessage tempmessage)

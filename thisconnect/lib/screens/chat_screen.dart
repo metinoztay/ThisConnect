@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:thisconnect/models/chatroom_model.dart';
-import 'package:thisconnect/models/message_model.dart'; // Assuming Message model is imported correctly
+import 'package:thisconnect/models/message_model.dart';
 import 'package:thisconnect/models/user_model.dart';
 import 'package:thisconnect/services/api_handler.dart';
 import 'package:thisconnect/utils/removeMessageExtraChar.dart';
@@ -15,10 +15,8 @@ import 'package:thisconnect/widgets/chatTypeMessageWidget.dart';
 class ChatScreen extends StatefulWidget {
   final ChatRoom chatRoom;
   final User user;
-  final String userName;
 
-  const ChatScreen(this.userName, this.user, this.chatRoom, {Key? key})
-      : super(key: key);
+  const ChatScreen(this.user, this.chatRoom, {super.key});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
