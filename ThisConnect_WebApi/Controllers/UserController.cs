@@ -59,6 +59,8 @@ namespace ThisConnect_WebApi.Controllers
 			return Ok(user);
 		}
 
+
+
 		[HttpPut("{id}")]
 		public async Task<IActionResult> UpdateUser(string id, [FromBody] TblUser user)
 		{
@@ -87,7 +89,18 @@ namespace ThisConnect_WebApi.Controllers
 			return NoContent();
 		}
 
-		[HttpDelete("{id}")]
+        [HttpPut("updateLastSeenAt")]
+        public async Task<IActionResult> UpdateLastSeenAt(string userId)
+        {
+            var user = await _context.TblUsers.FindAsync(userId);
+			user.LastSeenAt = DateTime.Now.ToString();
+			_context.TblUsers.Update(user);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+
+        [HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteUser(string id)
 		{
 			var user = await _context.TblUsers.FindAsync(id);

@@ -38,8 +38,9 @@ class ThisConnect extends StatelessWidget {
               backgroundColor: Colors.blue,
               elevation: 20,
               iconTheme: IconThemeData(color: Colors.white))),
-      //home: const SplashScreen(),
-      home: FutureBuilder<User?>(
+      home: const SplashScreen(),
+
+      /*home: FutureBuilder<User?>(
           future: PrefHandler.getPrefUserInformation(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
@@ -56,7 +57,7 @@ class ThisConnect extends StatelessWidget {
               // Show a loading spinner while waiting for the data
               return CircularProgressIndicator();
             }
-          }),
+          }),*/
       routes: {
         '/login': (context) => const LoginScreen(),
         '/help': (context) => const HelpScreen(),

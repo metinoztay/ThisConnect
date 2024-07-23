@@ -26,7 +26,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     phoneController.value = TextEditingValue(text: widget.phoneNumber);
   }

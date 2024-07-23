@@ -20,6 +20,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
   void initState() {
     super.initState();
     //getPrefUserInformation();
+    ApiHandler.updateLastSeenAt(widget.user.userId);
     getChatRoomsByParticipant(widget.user.userId);
     //readUsers();
   }

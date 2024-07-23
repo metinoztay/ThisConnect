@@ -43,6 +43,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void dispose() {
     messageTextController.removeListener(_handleMessageChanged);
     messageTextController.dispose();
+    closeSignalRConnection();
     super.dispose();
   }
 
@@ -160,6 +161,11 @@ class _ChatScreenState extends State<ChatScreen> {
         .invoke('JoinRoom', args: [widget.chatRoom.chatRoomId, null]);
   }
 
+  Future<void> closeSignalRConnection() async {
+    await connection.invoke('LeaveRoom', args: [widget.chatRoom.chatRoomId]);
+    await connection.stop();
+  }
+
   Future<void> getOldMessages() async {
     try {
       final List<Message>? results = await ApiHandler.getMessagesByChatRoomId(
@@ -179,9 +185,7 @@ class _ChatScreenState extends State<ChatScreen> {
           });
         }
       }
-    } catch (e) {
-      // Handle error
-    }
+    } catch (e) {}
   }
 
   Future<void> _handleIncomingMessage(List<dynamic>? args) async {
@@ -215,8 +219,6 @@ class _ChatScreenState extends State<ChatScreen> {
           reciever = receiverTemp;
         });
       }
-    } catch (e) {
-      // Handle error
-    }
+    } catch (e) {}
   }
 }

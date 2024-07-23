@@ -1,9 +1,11 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using QuestPDF.Infrastructure;
 using ThisConnect_WebApi.Hubs;
 using ThisConnect_WebApi.Models;
 
+QuestPDF.Settings.License = LicenseType.Community;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

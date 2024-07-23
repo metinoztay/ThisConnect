@@ -16,13 +16,13 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   bool isIntroducted = false;
-  User? user; // 'late' yerine nullable olarak değiştirildi
+  User? user;
 
   void checkIsIntroductedandLogin() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     //await prefs.clear();
     isIntroducted = prefs.getBool('isIntroducted') ?? false;
-    await getPrefUserInformation(); // Asenkron işlevi bekleyin
+    await getPrefUserInformation();
     if (user != null) {
       await Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => const MainScreen()),
